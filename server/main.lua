@@ -11,8 +11,8 @@ TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 RegisterServerEvent('koe_jobs:getStone')
 AddEventHandler('koe_jobs:getStone', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
-
-	xPlayer.addInventoryItem('stone', Config.stoneAmount )
+    local stoneAmount = math.random(Config.minStone , Config.maxStone)
+	xPlayer.addInventoryItem('stone', stoneAmount)
 
 end)
 
@@ -100,8 +100,8 @@ end)
 RegisterServerEvent('koe_jobs:getChickens')
 AddEventHandler('koe_jobs:getChickens', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
-
-	xPlayer.addInventoryItem('alive_chicken', Config.chickenAmount )
+    local chickenAmount = math.random(Config.minChicken, Config.maxChicken)
+	xPlayer.addInventoryItem('alive_chicken', chickenAmount)
 
 end)
 

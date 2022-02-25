@@ -16,44 +16,51 @@ Citizen.CreateThread(function()
     end
 end)
 
+--Job start blips--
+Citizen.CreateThread(function()
+         --Mining Blip--
+        miningblip = AddBlipForCoord(Config.mainMiningBlip)
+        SetBlipSprite(miningblip, 618)
+        SetBlipDisplay(miningblip, 2)
+        SetBlipScale(miningblip, 0.8)
+         SetBlipColour(miningblip, 5)
+        SetBlipAsShortRange(miningblip, true)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentString("Mining")
+        EndTextCommandSetBlipName(miningblip)  
+
+        --Butcher Blip--
+        butcherblip = AddBlipForCoord(Config.mainButcherBlip)
+        SetBlipSprite(butcherblip, 536)
+        SetBlipDisplay(butcherblip, 2)
+        SetBlipScale(butcherblip, 0.8)
+        SetBlipColour(butcherblip, 5)
+        SetBlipAsShortRange(butcherblip, true)
+        BeginTextCommandSetBlipName("STRING")
+        AddTextComponentString("Butcher")
+        EndTextCommandSetBlipName(butcherblip)  
+	end
+end)
+
+
 --Mining Start-------------------------------------------------------------------------------------------------------
+
+--Spawn NPC--
 Citizen.CreateThread(function()
     while true do
-                --Mining Blip--
-                miningblip = AddBlipForCoord(2831.28, 2797.52, 56.56)
-                SetBlipSprite(miningblip, 618)
-                SetBlipDisplay(miningblip, 2)
-                SetBlipScale(miningblip, 0.8)
-                SetBlipColour(miningblip, 5)
-                SetBlipAsShortRange(miningblip, true)
-                BeginTextCommandSetBlipName("STRING")
-                AddTextComponentString("Mining")
-                EndTextCommandSetBlipName(miningblip)  
-
-                --Butcher Blip--
-                butcherblip = AddBlipForCoord(-68.56, 6256.04, 30.08)
-                SetBlipSprite(butcherblip, 536)
-                SetBlipDisplay(butcherblip, 2)
-                SetBlipScale(butcherblip, 0.8)
-                SetBlipColour(butcherblip, 5)
-                SetBlipAsShortRange(butcherblip, true)
-                BeginTextCommandSetBlipName("STRING")
-                AddTextComponentString("Butcher")
-                EndTextCommandSetBlipName(butcherblip)  
-
         Citizen.Wait(1000)
-            local pedCoords = GetEntityCoords(PlayerPedId()) 
-            local minerCoords = Config.minerCoords
-            local dst = #(minerCoords - pedCoords)
+        local pedCoords = GetEntityCoords(PlayerPedId()) 
+        local minerCoords = Config.minerCoords
+        local dst = #(minerCoords - pedCoords)
             
-            if dst < 30 and minerSpawned == false then
-                TriggerEvent('koe_jobs:spawnMinerPed',minerCoords, Config.minerHeading)
-                minerSpawned = true
-            end
-            if dst >= 31  then
-                minerSpawned = false
-                DeleteEntity(minerNpc)
-            end
+        if dst < 30 and minerSpawned == false then
+            TriggerEvent('koe_jobs:spawnMinerPed',minerCoords, Config.minerHeading)
+            minerSpawned = true
+        end
+        if dst >= 31  then
+            minerSpawned = false
+            DeleteEntity(minerNpc)
+        end
     end
 end)
 
@@ -104,7 +111,7 @@ end)
 RegisterNetEvent('koe_jobs:startMiningjob')
 AddEventHandler('koe_jobs:startMiningjob',function()
         onjobMining = true
-        exports['okokNotify']:Alert("Mining", "Ive added markers to your map for all locations", 8000, 'info') 
+        exports['okokNotify']:Alert("Mining", "Ive added markers to your map for all locations, to get started go third eye some rocks down in the quarry", 15000, 'info') 
         --Stone Blip
         miningZone = AddBlipForRadius(Config.minerZoneCoords, 60.0)
         SetBlipSprite(miningZone,9)
@@ -112,7 +119,7 @@ AddEventHandler('koe_jobs:startMiningjob',function()
         SetBlipAlpha(miningZone,95)
 
         --Wash Blip
-        washBlip = AddBlipForCoord(2755.38, 2801.91, 33.97)
+        washBlip = AddBlipForCoord(Config.washBlipCoords)
         SetBlipSprite(washBlip, 618)
         SetBlipDisplay(washBlip, 2)
         SetBlipScale(washBlip, 0.8)
@@ -122,7 +129,7 @@ AddEventHandler('koe_jobs:startMiningjob',function()
         EndTextCommandSetBlipName(washBlip)  
 
         --Smelt Blip
-        smeltBlip = AddBlipForCoord(1109.48, -2007.92, 31.04)
+        smeltBlip = AddBlipForCoord(Config.smeltBlipCoords)
         SetBlipSprite(smeltBlip, 618)
         SetBlipDisplay(smeltBlip, 2)
         SetBlipScale(smeltBlip, 0.8)
@@ -287,6 +294,8 @@ end)
 ---Mining End------------------------------------------------------------------------------------------------
 
 --BUTCHER Start-------------------------------------------------------------------------------------------------------
+
+--Spawn Start NPC--
 Citizen.CreateThread(function()
     while true do
         Citizen.Wait(1000)
@@ -352,9 +361,9 @@ end)
 RegisterNetEvent('koe_jobs:startButcherjob')
 AddEventHandler('koe_jobs:startButcherjob',function()
         onjobButcher = true
-        exports['okokNotify']:Alert("Butcher", "Ive added markers to your map for all locations.", 8000, 'info') 
+        exports['okokNotify']:Alert("Butcher", "Ive added markers to your map for all locations. To get started go third eye the chicken cage down the hall on the left", 15000, 'info') 
         --Chicken Blip
-        chickenBlip = AddBlipForCoord(-62.52, 6244.12, 31.08)
+        chickenBlip = AddBlipForCoord(Config.aliveChickenBlip)
         SetBlipSprite(chickenBlip, 536)
         SetBlipDisplay(chickenBlip, 2)
         SetBlipScale(chickenBlip, 0.8)
@@ -364,7 +373,7 @@ AddEventHandler('koe_jobs:startButcherjob',function()
         EndTextCommandSetBlipName(chickenBlip)  
 
         --Kill Blip
-        killBlip = AddBlipForCoord(-79.62, 6228.66, 31.09)
+        killBlip = AddBlipForCoord(Config.killChickenBlip)
         SetBlipSprite(killBlip, 536)
         SetBlipDisplay(killBlip, 2)
         SetBlipScale(killBlip, 0.8)
@@ -374,7 +383,7 @@ AddEventHandler('koe_jobs:startButcherjob',function()
         EndTextCommandSetBlipName(killBlip)  
 
         --Package Blip
-        packageBlip = AddBlipForCoord(-102.1, 6210.07, 31.03)
+        packageBlip = AddBlipForCoord(Config.packageChickenBli)
         SetBlipSprite(packageBlip, 536)
         SetBlipDisplay(packageBlip, 2)
         SetBlipScale(packageBlip, 0.8)
@@ -424,7 +433,7 @@ AddEventHandler('koe_jobs:startButcherjob',function()
         })
 
         --SMELT--
-        exports.qtarget:AddBoxZone("package", vector3(-102.1, 6210.07, 31.03), 3.6, 18.6, {
+        exports.qtarget:AddBoxZone("package", vector3(-102.09, 6210.07, 31.03), 3.6, 18.6, {
             name="package",
             heading=226,
             debugPoly=false,
