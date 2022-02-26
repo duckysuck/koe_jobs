@@ -38,8 +38,7 @@ Citizen.CreateThread(function()
         SetBlipAsShortRange(butcherblip, true)
         BeginTextCommandSetBlipName("STRING")
         AddTextComponentString("Butcher")
-        EndTextCommandSetBlipName(butcherblip)  
-	end
+        EndTextCommandSetBlipName(butcherblip)
 end)
 
 

@@ -21,7 +21,7 @@ RegisterServerEvent('koe_jobs:stoneCount')
 AddEventHandler('koe_jobs:stoneCount', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'stone', 'washed_stone'})
-    if items and items.stone > 1 then
+    if items and items.stone > 0 then
         TriggerClientEvent('koe_jobs:washStone', source)
     else
         TriggerClientEvent('okokNotify:Alert', source, "Mining", "Not enough stone, go mine some more.", 8000, 'error')
@@ -34,7 +34,7 @@ RegisterServerEvent('koe_jobs:washedstoneCount')
 AddEventHandler('koe_jobs:washedstoneCount', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'stone', 'washed_stone'})
-    if items and items.washed_stone > 1 then
+    if items and items.washed_stone > 0 then
         TriggerClientEvent('koe_jobs:smelt', source)
     else
         TriggerClientEvent('okokNotify:Alert', source, "Mining", "Not enough washed stone, go wash some more.", 8000, 'error')
@@ -47,7 +47,7 @@ RegisterServerEvent('koe_jobs:getWashed')
 AddEventHandler('koe_jobs:getWashed', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'stone', 'washed_stone'})
-    if items and items.stone > 1 then
+    if items and items.stone > 0 then
         xPlayer.removeInventoryItem('stone', 1)
         xPlayer.addInventoryItem('washed_stone', 2)
     else
@@ -61,7 +61,7 @@ RegisterServerEvent('koe_jobs:getMiningRewards')
 AddEventHandler('koe_jobs:getMiningRewards', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'stone', 'washed_stone'})
-    if items and items.washed_stone > 1 then
+    if items and items.washed_stone > 0 then
         xPlayer.removeInventoryItem('washed_stone', 1)
         xPlayer.addInventoryItem('copper', 8)
         xPlayer.addInventoryItem('iron', 6)
@@ -77,15 +77,15 @@ RegisterServerEvent('koe_jobs:sellMiningRewards')
 AddEventHandler('koe_jobs:sellMiningRewards', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'iron', 'copper', 'gold'})
-    if items and items.copper > 1 then
+    if items and items.copper > 0 then
         xPlayer.removeInventoryItem('copper', items.copper)
         xPlayer.addMoney(items.copper * Config.CopperPrice )
     end
-    if items and items.iron > 1 then
+    if items and items.iron > 0 then
         xPlayer.removeInventoryItem('iron', items.iron)
         xPlayer.addMoney(items.iron * Config.IronPrice )
     end
-    if items and items.gold > 1 then
+    if items and items.gold > 0 then
         xPlayer.removeInventoryItem('gold', items.gold)
         xPlayer.addMoney(items.gold * Config.GoldPrice )
     end
@@ -110,7 +110,7 @@ RegisterServerEvent('koe_jobs:chickenCount')
 AddEventHandler('koe_jobs:chickenCount', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'alive_chicken', 'slaughtered_chicken', 'packaged_chicken'})
-    if items and items.alive_chicken > 1 then
+    if items and items.alive_chicken > 0 then
         TriggerClientEvent('koe_jobs:killEmAll', source)
     else
         TriggerClientEvent('okokNotify:Alert', source, "Butcher", "Not enough Chickens, go get some!", 8000, 'error')
@@ -123,7 +123,7 @@ RegisterServerEvent('koe_jobs:killedCount')
 AddEventHandler('koe_jobs:killedCount', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'alive_chicken', 'slaughtered_chicken', 'packaged_chicken'})
-    if items and items.slaughtered_chicken > 1 then
+    if items and items.slaughtered_chicken > 0 then
         TriggerClientEvent('koe_jobs:PackageEmUp', source)
     else
         TriggerClientEvent('okokNotify:Alert', source, "Butcher", "Not enough DEAD Chickens, go get some!", 8000, 'error')
@@ -136,7 +136,7 @@ RegisterServerEvent('koe_jobs:getKilled')
 AddEventHandler('koe_jobs:getKilled', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'alive_chicken', 'slaughtered_chicken', 'packaged_chicken'})
-    if items and items.alive_chicken > 1 then
+    if items and items.alive_chicken > 0 then
         xPlayer.removeInventoryItem('alive_chicken', 1)
         xPlayer.addInventoryItem('slaughtered_chicken', 2)
     else
@@ -145,12 +145,12 @@ AddEventHandler('koe_jobs:getKilled', function()
 
 end)
 
---Smelts the stone
+--dead chicken to packaged chicken
 RegisterServerEvent('koe_jobs:getButcherRewards')
 AddEventHandler('koe_jobs:getButcherRewards', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'alive_chicken', 'slaughtered_chicken', 'packaged_chicken'})
-    if items and items.slaughtered_chicken > 1 then
+    if items and items.slaughtered_chicken > 0 then
         xPlayer.removeInventoryItem('slaughtered_chicken', 1)
         xPlayer.addInventoryItem('packaged_chicken', 8)
     else
@@ -164,7 +164,7 @@ RegisterServerEvent('koe_jobs:sellButcherRewards')
 AddEventHandler('koe_jobs:sellButcherRewards', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'alive_chicken', 'slaughtered_chicken', 'packaged_chicken'})
-    if items and items.packaged_chicken > 1 then
+    if items and items.packaged_chicken > 0 then
         xPlayer.removeInventoryItem('packaged_chicken', items.packaged_chicken)
         xPlayer.addMoney(items.packaged_chicken * Config.packagedPrice )
     end
