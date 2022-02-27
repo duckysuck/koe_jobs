@@ -5,7 +5,9 @@ game 'gta5'
 version '1.0.0'
 
 client_scripts {
-	'client/main.lua',
+	'client/mining.lua',
+	'client/butcher.lua',
+	'client/tailoring.lua',
 	'config.lua'
  }
  
