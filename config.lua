@@ -12,7 +12,7 @@ Config.minStone             = 2
 Config.maxStone             = 8
 Config.CopperPrice          = 5
 Config.IronPrice            = 9
-Config.GoldPrice            = 25
+Config.GoldPrice            = 15
 
 --BUTCHER--
 Config.mainButcherBlip        = vector3(-592.2, -892.44, 25.92) 
@@ -24,7 +24,7 @@ Config.butcherHeading         = 82.68
 Config.butcherModel           = 'mp_m_shopkeep_01'
 Config.minChicken             = 2
 Config.maxChicken             = 8            
-Config.packagedPrice          = 25
+Config.packagedPrice          = 15
 
 --Tailoring--
 Config.mainTailoringBlip      = vector3(2016.24, 4987.44, 41.08) 
@@ -36,7 +36,24 @@ Config.tailorHeading          = 220.24
 Config.tailorModel            = 'cs_old_man2'
 Config.minWool                = 2
 Config.maxWool                = 8            
-Config.clothePrice            = 25
+Config.clothePrice            = 15
+
+--FUELER--
+Config.mainfuelerBlip         = vector3(2695.16, 1664.48, 24.64) 
+Config.petrolBlip             = vector3(604.32, 2858.64, 40.0)
+Config.raffinBlip             = vector3(2776.04, 1495.48, 24.52) 
+Config.essenceBlip            = vector3(2769.96, 1520.96, 30.8) 
+Config.fuelerCoords           = vector3(2695.24, 1664.48, 23.6)
+Config.fuelerHeading          = 88.52              
+Config.fuelerModel           = 'cs_joeminuteman'
+Config.minPetrol              = 2
+Config.maxPetrol              = 8            
+Config.essencePrice           = 15
+
+
+--petrol
+--petrol_raffin
+--essence
 
 
 

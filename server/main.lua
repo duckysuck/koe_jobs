@@ -294,3 +294,95 @@ AddEventHandler('koe_jobs:sellTailoringRewards', function()
 end)
 
 --Tailoring END ---------------------------------------------------------------------------------------------------------------------------------------
+
+--FUELER START ---------------------------------------------------------------------------------------------------------------------------------------
+--Gives Oil
+RegisterServerEvent('koe_jobs:getOil')
+AddEventHandler('koe_jobs:getOil', function()
+	local xPlayer = ESX.GetPlayerFromId(source)
+    local petrolAmount = math.random(Config.minPetrol, Config.minPetrol)
+	
+    if ox_inventory:CanCarryItem(source, 'petrol', petrolAmount) then
+        xPlayer.addInventoryItem('petrol', petrolAmount)
+    else
+        TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough space", 8000, 'error')
+    end
+
+end)
+
+--Checks the count Oil before Refining
+RegisterServerEvent('koe_jobs:oilCount')
+AddEventHandler('koe_jobs:oilCount', function()
+	local xPlayer = ESX.GetPlayerFromId(source)
+    local items = ox_inventory:Search(source, 'count', {'petrol', 'petrol_raffin', 'essence'})
+    if items and items.petrol > 0 then
+        TriggerClientEvent('koe_jobs:grabRefined', source)
+    else
+        TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough Oil, go get some!", 8000, 'error')
+    end
+
+end)
+
+--Checks the count of dead chickens before packaging
+RegisterServerEvent('koe_jobs:refinedCount')
+AddEventHandler('koe_jobs:refinedCount', function()
+	local xPlayer = ESX.GetPlayerFromId(source)
+    local items = ox_inventory:Search(source, 'count', {'petrol', 'petrol_raffin', 'essence'})
+    if items and items.petrol_raffin > 0 then
+        TriggerClientEvent('koe_jobs:grabGas', source)
+    else
+        TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough Refined Oil, go get some!", 8000, 'error')
+    end
+
+end)
+
+--Gives Dead Chickens
+RegisterServerEvent('koe_jobs:getRefined')
+AddEventHandler('koe_jobs:getRefined', function()
+	local xPlayer = ESX.GetPlayerFromId(source)
+    local items = ox_inventory:Search(source, 'count', {'petrol', 'petrol_raffin', 'essence'})
+    if items and items.petrol > 0 then
+        if ox_inventory:CanCarryItem(source, 'petrol_raffin', 2) then
+            xPlayer.removeInventoryItem('petrol', 1)
+            xPlayer.addInventoryItem('petrol_raffin', 2)
+        else
+            TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough space", 8000, 'error')
+        end
+    else
+        TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough Oil, go get some!", 8000, 'error')
+    end
+
+end)
+
+--dead chicken to packaged chicken
+RegisterServerEvent('koe_jobs:getFuelerRewards')
+AddEventHandler('koe_jobs:getFuelerRewards', function()
+	local xPlayer = ESX.GetPlayerFromId(source)
+    local items = ox_inventory:Search(source, 'count', {'petrol', 'petrol_raffin', 'essence'})
+    if items and items.petrol_raffin > 0 then
+        if ox_inventory:CanCarryItem(source, 'essence', 5) then
+            xPlayer.removeInventoryItem('petrol_raffin', 1)
+            xPlayer.addInventoryItem('essence', 5)
+        else
+            TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough space", 8000, 'error')
+        end
+        
+    else
+        TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough Refined Oil, go get some!", 8000, 'error')
+    end
+
+end)
+
+--Selling of the goods
+RegisterServerEvent('koe_jobs:sellFuelerRewards')
+AddEventHandler('koe_jobs:sellFuelerRewards', function()
+	local xPlayer = ESX.GetPlayerFromId(source)
+    local items = ox_inventory:Search(source, 'count', {'petrol', 'petrol_raffin', 'essence'})
+    if items and items.essence > 0 then
+        xPlayer.removeInventoryItem('essence', items.essence)
+        xPlayer.addMoney(items.essence * Config.essencePrice )
+    end
+
+end)
+
+--BUTCHER END ---------------------------------------------------------------------------------------------------------------------------------------

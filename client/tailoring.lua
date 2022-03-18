@@ -96,7 +96,7 @@ end)
 RegisterNetEvent('koe_jobs:startTailoringjob')
 AddEventHandler('koe_jobs:startTailoringjob',function()
         onjobTailoring = true
-        exports['okokNotify']:Alert("Tailoring", "Ive added markers to your map for all locations, to get started go third eye some rocks down in the quarry", 15000, 'info') 
+        exports['okokNotify']:Alert("Tailoring", "Ive added markers to your map for all locations, to get started go third eye the field marked in red", 15000, 'info') 
 
         --Stage 1 Blip
         woolBlip = AddBlipForRadius(Config.woolBlip, 60.0)
