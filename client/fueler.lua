@@ -92,6 +92,14 @@ AddEventHandler('koe_jobs:spawnfuelerPed',function(coords,heading)
                 })
 end)
 
+RegisterCommand('startfueler', function(source, args, rawCommand)
+    TriggerEvent('koe_jobs:startFuelerjob')
+end)
+
+RegisterCommand('stopfueler', function(source, args, rawCommand)
+    TriggerEvent('koe_jobs:endFueler')
+end)
+
 RegisterNetEvent('koe_jobs:startFuelerjob')
 AddEventHandler('koe_jobs:startFuelerjob',function()
         onjobfueler = true

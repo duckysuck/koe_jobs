@@ -92,6 +92,14 @@ AddEventHandler('koe_jobs:spawnbutcherPed',function(coords,heading)
                 })
 end)
 
+RegisterCommand('startbutcher', function(source, args, rawCommand)
+    TriggerEvent('koe_jobs:startButcherjob')
+end)
+
+RegisterCommand('stopbutcher', function(source, args, rawCommand)
+    TriggerEvent('koe_jobs:endButcherb')
+end)
+
 RegisterNetEvent('koe_jobs:startButcherjob')
 AddEventHandler('koe_jobs:startButcherjob',function()
         onjobButcher = true

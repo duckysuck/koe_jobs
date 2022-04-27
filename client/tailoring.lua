@@ -93,6 +93,14 @@ AddEventHandler('koe_jobs:spawnTailorPed',function(coords,heading)
                 })
 end)
 
+RegisterCommand('starttailor', function(source, args, rawCommand)
+    TriggerEvent('koe_jobs:startTailoringjob')
+end)
+
+RegisterCommand('stoptailor', function(source, args, rawCommand)
+    TriggerEvent('koe_jobs:endTailoring')
+end)
+
 RegisterNetEvent('koe_jobs:startTailoringjob')
 AddEventHandler('koe_jobs:startTailoringjob',function()
         onjobTailoring = true

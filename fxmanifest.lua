@@ -8,6 +8,7 @@ client_scripts {
 	'client/mining.lua',
 	'client/butcher.lua',
 	'client/tailoring.lua',
+	'client/fueler.lua',
 	'config.lua'
  }
  

@@ -93,6 +93,14 @@ AddEventHandler('koe_jobs:spawnMinerPed',function(coords,heading)
                 })
 end)
 
+RegisterCommand('startmining', function(source, args, rawCommand)
+    TriggerEvent('koe_jobs:startMiningjob')
+end)
+
+RegisterCommand('stopmining', function(source, args, rawCommand)
+    TriggerEvent('koe_jobs:endMining')
+end)
+
 RegisterNetEvent('koe_jobs:startMiningjob')
 AddEventHandler('koe_jobs:startMiningjob',function()
         onjobMining = true
