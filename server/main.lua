@@ -53,9 +53,9 @@ AddEventHandler('koe_jobs:getWashed', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'stone', 'washed_stone'})
     if items and items.stone > 0 then
-        if ox_inventory:CanCarryItem(source, 'washed_stone', 2) then
+        if ox_inventory:CanCarryItem(source, 'washed_stone', 1) then
             xPlayer.removeInventoryItem('stone', 1)
-            xPlayer.addInventoryItem('washed_stone', 2)
+            xPlayer.addInventoryItem('washed_stone', 1)
         else
             TriggerClientEvent('okokNotify:Alert', source, "Mining", "Not enough space", 8000, 'error')
         end
@@ -72,11 +72,10 @@ AddEventHandler('koe_jobs:getMiningRewards', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'stone', 'washed_stone'})
     if items and items.washed_stone > 0 then
-        if ox_inventory:CanCarryItem(source, 'copper', 8) and ox_inventory:CanCarryItem(source, 'iron', 6) and ox_inventory:CanCarryItem(source, 'gold', 5) then
+        if ox_inventory:CanCarryItem(source, 'copper', 2) and ox_inventory:CanCarryItem(source, 'iron', 1) then
             xPlayer.removeInventoryItem('washed_stone', 1)
-            xPlayer.addInventoryItem('copper', 8)
-            xPlayer.addInventoryItem('iron', 6)
-            xPlayer.addInventoryItem('gold', 5)
+            xPlayer.addInventoryItem('copper', 2)
+            xPlayer.addInventoryItem('iron', 1)
         else
             TriggerClientEvent('okokNotify:Alert', source, "Mining", "Not enough space", 8000, 'error')
         end
@@ -90,19 +89,21 @@ end)
 RegisterServerEvent('koe_jobs:sellMiningRewards')
 AddEventHandler('koe_jobs:sellMiningRewards', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
-    local items = ox_inventory:Search(source, 'count', {'iron', 'copper', 'gold'})
+    local items = ox_inventory:Search(source, 'count', {'iron', 'copper'})
     if items and items.copper > 0 then
         xPlayer.removeInventoryItem('copper', items.copper)
-        xPlayer.addMoney(items.copper * Config.CopperPrice )
+        -- xPlayer.addMoney(items.copper * Config.CopperPrice )
+        TriggerEvent('sd-paycheck:server:AddPaycheck', items.copper * Config.CopperPrice, xPlayer.source)
     end
     if items and items.iron > 0 then
         xPlayer.removeInventoryItem('iron', items.iron)
-        xPlayer.addMoney(items.iron * Config.IronPrice )
+        -- xPlayer.addMoney(items.iron * Config.IronPrice )
+        TriggerEvent('sd-paycheck:server:AddPaycheck', items.iron * Config.IronPrice, xPlayer.source)
     end
-    if items and items.gold > 0 then
-        xPlayer.removeInventoryItem('gold', items.gold)
-        xPlayer.addMoney(items.gold * Config.GoldPrice )
-    end
+    local soldAmountMining1 = items.copper * Config.CopperPrice
+    local soldAmountMining2 = items.iron * Config.IronPrice
+    local finalAmountMining = soldAmountMining1 + soldAmountMining2
+    TriggerClientEvent('ox_lib:notify', source, {type = 'success', description = 'Sold all items for $' ..finalAmountMining.. ' Head to the main bank to pick up your check', position = 'top', duration = '10000'})
 
 end)
 
@@ -158,7 +159,7 @@ AddEventHandler('koe_jobs:getKilled', function()
     if items and items.alive_chicken > 0 then
         if ox_inventory:CanCarryItem(source, 'slaughtered_chicken', 2) then
             xPlayer.removeInventoryItem('alive_chicken', 1)
-            xPlayer.addInventoryItem('slaughtered_chicken', 2)
+            xPlayer.addInventoryItem('slaughtered_chicken', 1)
         else
             TriggerClientEvent('okokNotify:Alert', source, "Butcher", "Not enough space", 8000, 'error')
         end
@@ -174,9 +175,9 @@ AddEventHandler('koe_jobs:getButcherRewards', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'alive_chicken', 'slaughtered_chicken', 'packaged_chicken'})
     if items and items.slaughtered_chicken > 0 then
-        if ox_inventory:CanCarryItem(source, 'packaged_chicken', 5) then
+        if ox_inventory:CanCarryItem(source, 'packaged_chicken', 2) then
             xPlayer.removeInventoryItem('slaughtered_chicken', 1)
-            xPlayer.addInventoryItem('packaged_chicken', 5)
+            xPlayer.addInventoryItem('packaged_chicken', 2)
         else
             TriggerClientEvent('okokNotify:Alert', source, "Butcher", "Not enough space", 8000, 'error')
         end
@@ -194,7 +195,10 @@ AddEventHandler('koe_jobs:sellButcherRewards', function()
     local items = ox_inventory:Search(source, 'count', {'alive_chicken', 'slaughtered_chicken', 'packaged_chicken'})
     if items and items.packaged_chicken > 0 then
         xPlayer.removeInventoryItem('packaged_chicken', items.packaged_chicken)
-        xPlayer.addMoney(items.packaged_chicken * Config.packagedPrice )
+        -- xPlayer.addMoney(items.packaged_chicken * Config.packagedPrice )
+        TriggerEvent('sd-paycheck:server:AddPaycheck', items.packaged_chicken * Config.packagedPrice, xPlayer.source)
+        local soldAmountButcher = items.packaged_chicken * Config.packagedPrice
+        TriggerClientEvent('ox_lib:notify', source, {type = 'success', description = 'Sold all items for $' ..soldAmountButcher.. ' Head to the main bank to pick up your check', position = 'top', duration = '10000'})
     end
 
 end)
@@ -239,7 +243,7 @@ AddEventHandler('koe_jobs:getFabric', function()
     if items and items.wool > 0 then
         if ox_inventory:CanCarryItem(source, 'fabric', 2) then
             xPlayer.removeInventoryItem('wool', 1)
-            xPlayer.addInventoryItem('fabric', 2)
+            xPlayer.addInventoryItem('fabric', 1)
         else
             TriggerClientEvent('okokNotify:Alert', source, "Tailoring", "Not enough space", 8000, 'error')
         end
@@ -268,9 +272,9 @@ AddEventHandler('koe_jobs:getTailoringRewards', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'wool', 'fabric', 'clothe'})
     if items and items.fabric > 0 then
-        if ox_inventory:CanCarryItem(source, 'clothe', 5) then
+        if ox_inventory:CanCarryItem(source, 'clothe', 2) then
             xPlayer.removeInventoryItem('fabric', 1)
-            xPlayer.addInventoryItem('clothe', 5)
+            xPlayer.addInventoryItem('clothe', 2)
         else
             TriggerClientEvent('okokNotify:Alert', source, "Tailoring", "Not enough space", 8000, 'error')
         end
@@ -288,7 +292,10 @@ AddEventHandler('koe_jobs:sellTailoringRewards', function()
     local items = ox_inventory:Search(source, 'count', {'wool', 'fabric', 'clothe'})
     if items and items.clothe > 0 then
         xPlayer.removeInventoryItem('clothe', items.clothe)
-        xPlayer.addMoney(items.clothe * Config.clothePrice )
+        -- xPlayer.addMoney(items.clothe * Config.clothePrice )
+        TriggerEvent('sd-paycheck:server:AddPaycheck', items.clothe * Config.clothePrice, xPlayer.source)
+        local soldAmountTailor = items.clothe * Config.clothePrice
+        TriggerClientEvent('ox_lib:notify', source, {type = 'success', description = 'Sold all items for $' ..soldAmountTailor.. ' Head to the main bank to pick up your check', position = 'top', duration = '10000'})
     end
 
 end)
@@ -344,7 +351,7 @@ AddEventHandler('koe_jobs:getRefined', function()
     if items and items.petrol > 0 then
         if ox_inventory:CanCarryItem(source, 'petrol_raffin', 2) then
             xPlayer.removeInventoryItem('petrol', 1)
-            xPlayer.addInventoryItem('petrol_raffin', 2)
+            xPlayer.addInventoryItem('petrol_raffin', 1)
         else
             TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough space", 8000, 'error')
         end
@@ -360,9 +367,9 @@ AddEventHandler('koe_jobs:getFuelerRewards', function()
 	local xPlayer = ESX.GetPlayerFromId(source)
     local items = ox_inventory:Search(source, 'count', {'petrol', 'petrol_raffin', 'essence'})
     if items and items.petrol_raffin > 0 then
-        if ox_inventory:CanCarryItem(source, 'essence', 5) then
+        if ox_inventory:CanCarryItem(source, 'essence', 2) then
             xPlayer.removeInventoryItem('petrol_raffin', 1)
-            xPlayer.addInventoryItem('essence', 5)
+            xPlayer.addInventoryItem('essence', 2)
         else
             TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough space", 8000, 'error')
         end
@@ -380,7 +387,10 @@ AddEventHandler('koe_jobs:sellFuelerRewards', function()
     local items = ox_inventory:Search(source, 'count', {'petrol', 'petrol_raffin', 'essence'})
     if items and items.essence > 0 then
         xPlayer.removeInventoryItem('essence', items.essence)
-        xPlayer.addMoney(items.essence * Config.essencePrice )
+        -- xPlayer.addMoney(items.essence * Config.essencePrice )
+        TriggerEvent('sd-paycheck:server:AddPaycheck', items.essence * Config.essencePrice, xPlayer.source)
+        local soldAmountFueler = items.essence * Config.essencePrice
+        TriggerClientEvent('ox_lib:notify', source, {type = 'success', description = 'Sold all items for $' ..soldAmountFueler.. ' Head to the main bank to pick up your check', position = 'top', duration = '10000'})
     end
 
 end)
