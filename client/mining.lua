@@ -104,7 +104,14 @@ end)
 RegisterNetEvent('koe_jobs:startMiningjob')
 AddEventHandler('koe_jobs:startMiningjob',function()
         onjobMining = true
-        exports['okokNotify']:Alert("Mining", "Ive added markers to your map for all locations, to get started go third eye some rocks down in the quarry", 15000, 'info') 
+        -- exports['okokNotify']:Alert("Mining", "Ive added markers to your map for all locations, to get started go third eye some rocks down in the quarry", 15000, 'info') 
+        lib.notify({
+            title = 'Mining',
+            description = 'Ive added markers to your map for all locations, to get started go third eye some rocks down in the quarry',
+            type = 'inform',
+            duration = 15000,
+            position = 'top',
+           })
         --Stone Blip
         miningZone = AddBlipForRadius(Config.minerZoneCoords, 60.0)
         SetBlipSprite(miningZone,9)
@@ -204,6 +211,7 @@ AddEventHandler('koe_jobs:mineRock',function()
         if finished2 then
             local finished3 = exports["tgiann-skillbar"]:taskBar(800)
             if finished3 then
+                TriggerEvent('koe_jobs:mineRock')
                 TriggerServerEvent('koe_jobs:getStone')  
             end
         end
@@ -226,6 +234,7 @@ AddEventHandler('koe_jobs:washStone',function()
     if finished then
         local finished2 = exports["tgiann-skillbar"]:taskBar(1100)
         if finished2 then
+            TriggerEvent('koe_jobs:washStone')
             TriggerServerEvent('koe_jobs:getWashed')  
         end
     end
@@ -236,6 +245,7 @@ RegisterNetEvent('koe_jobs:smelt')
 AddEventHandler('koe_jobs:smelt',function()
     local finished = exports["tgiann-skillbar"]:taskBar(400)
     if finished then
+        TriggerEvent('koe_jobs:smelt')
         TriggerServerEvent('koe_jobs:getMiningRewards')   
     end
 end)
@@ -251,7 +261,14 @@ AddEventHandler('koe_jobs:endMining',function()
     RemoveBlip(miningZone)
     RemoveBlip(washBlip)
     RemoveBlip(smeltBlip)
-    exports['okokNotify']:Alert("Mining", "Clocked Out and markers removed", 8000, 'info')  
+    -- exports['okokNotify']:Alert("Mining", "Clocked Out and markers removed", 8000, 'info')  
+    lib.notify({
+        title = 'Mining',
+        description = 'Clocked Out and markers removed',
+        type = 'inform',
+        duration = 8000,
+        position = 'top',
+       })
 end)
       
 

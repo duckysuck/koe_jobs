@@ -103,7 +103,14 @@ end)
 RegisterNetEvent('koe_jobs:startFuelerjob')
 AddEventHandler('koe_jobs:startFuelerjob',function()
         onjobfueler = true
-        exports['okokNotify']:Alert("Fueler", "Ive added markers to your map for all locations. To get started head above 4020 to the blip marked on your GPS to grab oil", 15000, 'info') 
+        -- exports['okokNotify']:Alert("Fueler", "Ive added markers to your map for all locations. To get started head above 4020 to the blip marked on your GPS to grab oil", 15000, 'info') 
+        lib.notify({
+            title = 'Fueler',
+            description = 'Ive added markers to your map for all locations. To get started head above 4020 to the blip marked on your GPS to grab oil',
+            type = 'inform',
+            duration = 8000,
+            position = 'top'
+           })
         --Oil Blip
         petrolBlip = AddBlipForCoord(Config.petrolBlip)
         SetBlipSprite(petrolBlip, 88)
@@ -207,6 +214,7 @@ AddEventHandler('koe_jobs:grabOil',function()
         if finished2 then
             local finished3 = exports["tgiann-skillbar"]:taskBar(800)
             if finished3 then
+                TriggerEvent('koe_jobs:grabOil')
                 TriggerServerEvent('koe_jobs:getOil')
             end
         end
@@ -230,6 +238,7 @@ AddEventHandler('koe_jobs:grabRefined',function()
     if finished then
         local finished2 = exports["tgiann-skillbar"]:taskBar(1100)
         if finished2 then
+            TriggerEvent('koe_jobs:grabRefined')
             TriggerServerEvent('koe_jobs:getRefined')
         end
     end
@@ -240,6 +249,7 @@ RegisterNetEvent('koe_jobs:grabGas')
 AddEventHandler('koe_jobs:grabGas',function()
     local finished = exports["tgiann-skillbar"]:taskBar(400)
     if finished then
+        TriggerEvent('koe_jobs:grabGas')
         TriggerServerEvent('koe_jobs:getFuelerRewards') 
     end
 
@@ -256,7 +266,14 @@ AddEventHandler('koe_jobs:endFueler',function()
     RemoveBlip(petrolBlip)
     RemoveBlip(raffinBlip)
     RemoveBlip(essenceBlip)
-    exports['okokNotify']:Alert("Fueler", "Clocked Out and markers removed", 8000, 'info')  
+    -- exports['okokNotify']:Alert("Fueler", "Clocked Out and markers removed", 8000, 'info')  
+    lib.notify({
+        title = 'Fueler',
+        description = 'Clocked Out and markers removed',
+        type = 'inform',
+        duration = 8000,
+        position = 'top'
+       })
 end)
       
 

@@ -9,10 +9,10 @@ Config.minerZoneCoords      = vector3(2949.84, 2787.84, 41.08)
 Config.washBlipCoords       = vector3(2755.38, 2801.91, 33.97)                                                        
 Config.smeltBlipCoords      = vector3(1109.48, -2007.92, 31.04)
 Config.minStone             = 1
-Config.maxStone             = 1
-Config.CopperPrice          = 2
-Config.IronPrice            = 5
-Config.GoldPrice            = 7
+Config.maxStone             = 2
+Config.CopperPrice          = 5
+Config.IronPrice            = 7
+Config.GoldPrice            = 20
 
 --BUTCHER--
 Config.mainButcherBlip        = vector3(-592.2, -892.44, 25.92) 
@@ -24,7 +24,7 @@ Config.butcherHeading         = 82.68
 Config.butcherModel           = 'mp_m_shopkeep_01'
 Config.minChicken             = 1
 Config.maxChicken             = 1            
-Config.packagedPrice          = 7
+Config.packagedPrice          = 20
 
 --Tailoring--
 Config.mainTailoringBlip      = vector3(2016.24, 4987.44, 41.08) 
@@ -35,8 +35,8 @@ Config.tailorNpcCoords        = vector3(2016.24, 4987.44, 41.08)
 Config.tailorHeading          = 220.24             
 Config.tailorModel            = 'cs_old_man2'
 Config.minWool                = 1
-Config.maxWool                = 1            
-Config.clothePrice            = 7
+Config.maxWool                = 2            
+Config.clothePrice            = 20
 
 --FUELER--
 Config.mainfuelerBlip         = vector3(2695.16, 1664.48, 24.64) 
@@ -47,8 +47,8 @@ Config.fuelerCoords           = vector3(2695.24, 1664.48, 23.6)
 Config.fuelerHeading          = 88.52              
 Config.fuelerModel           = 'cs_joeminuteman'
 Config.minPetrol              = 1
-Config.maxPetrol              = 1            
-Config.essencePrice           = 7
+Config.maxPetrol              = 2            
+Config.essencePrice           = 20
 
 
 --petrol

@@ -103,7 +103,14 @@ end)
 RegisterNetEvent('koe_jobs:startButcherjob')
 AddEventHandler('koe_jobs:startButcherjob',function()
         onjobButcher = true
-        exports['okokNotify']:Alert("Butcher", "Ive added markers to your map for all locations. To get started head to 1023 and third eye the cages inside on the left", 15000, 'info') 
+        -- exports['okokNotify']:Alert("Butcher", "Ive added markers to your map for all locations. To get started head to 1023 and third eye the cages inside on the left", 15000, 'info') 
+        lib.notify({
+            title = 'Butcher',
+            description = 'Ive added markers to your map for all locations. To get started head to 1023 and third eye the cages inside on the left',
+            type = 'inform',
+            duration = 15000,
+            position = 'top',
+           })
         --Chicken Blip
         chickenBlip = AddBlipForCoord(Config.aliveChickenBlip)
         SetBlipSprite(chickenBlip, 536)
@@ -174,7 +181,7 @@ AddEventHandler('koe_jobs:startButcherjob',function()
                 distance = 3.5
         })
 
-        --SMELT--
+        --package--
         exports.qtarget:AddBoxZone("package", vector3(-102.09, 6210.07, 31.03), 3.6, 18.6, {
             name="package",
             heading=226,
@@ -205,6 +212,7 @@ AddEventHandler('koe_jobs:grabChickens',function()
         if finished2 then
             local finished3 = exports["tgiann-skillbar"]:taskBar(800)
             if finished3 then
+                TriggerEvent('koe_jobs:grabChickens')
                 TriggerServerEvent('koe_jobs:getChickens')
             end
         end
@@ -228,6 +236,7 @@ AddEventHandler('koe_jobs:killEmAll',function()
     if finished then
         local finished2 = exports["tgiann-skillbar"]:taskBar(1100)
         if finished2 then
+            TriggerEvent('koe_jobs:killEmAll')
             TriggerServerEvent('koe_jobs:getKilled')
         end
     end
@@ -238,6 +247,7 @@ RegisterNetEvent('koe_jobs:PackageEmUp')
 AddEventHandler('koe_jobs:PackageEmUp',function()
     local finished = exports["tgiann-skillbar"]:taskBar(400)
     if finished then
+        TriggerEvent('koe_jobs:PackageEmUp')
         TriggerServerEvent('koe_jobs:getButcherRewards') 
     end
 
@@ -254,7 +264,14 @@ AddEventHandler('koe_jobs:endButcher',function()
     RemoveBlip(chickenBlip)
     RemoveBlip(killBlip)
     RemoveBlip(packageBlip)
-    exports['okokNotify']:Alert("Butcher", "Clocked Out and markers removed", 8000, 'info')  
+    -- exports['okokNotify']:Alert("Butcher", "Clocked Out and markers removed", 8000, 'info')  
+    lib.notify({
+        title = 'Mining',
+        description = 'Clocked Out and markers removed',
+        type = 'inform',
+        duration = 8000,
+        position = 'top',
+       })
 end)
       
 

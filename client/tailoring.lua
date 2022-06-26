@@ -104,7 +104,14 @@ end)
 RegisterNetEvent('koe_jobs:startTailoringjob')
 AddEventHandler('koe_jobs:startTailoringjob',function()
         onjobTailoring = true
-        exports['okokNotify']:Alert("Tailoring", "Ive added markers to your map for all locations, to get started go third eye the field marked in red", 15000, 'info') 
+        -- exports['okokNotify']:Alert("Tailoring", "Ive added markers to your map for all locations, to get started go third eye the field marked in red", 15000, 'info') 
+        lib.notify({
+            title = 'Tailoring',
+            description = 'Ive added markers to your map for all locations, to get started go third eye the field marked in red',
+            type = 'inform',
+            duration = 8000,
+            position = 'top'
+           })
 
         --Stage 1 Blip
         woolBlip = AddBlipForRadius(Config.woolBlip, 60.0)
@@ -205,6 +212,7 @@ AddEventHandler('koe_jobs:tailorWool',function()
         if finished2 then
             local finished3 = exports["tgiann-skillbar"]:taskBar(800)
             if finished3 then
+                TriggerEvent('koe_jobs:tailorWool')
                 TriggerServerEvent('koe_jobs:getWool')  
             end
         end
@@ -227,6 +235,7 @@ AddEventHandler('koe_jobs:getFabric',function()
     if finished then
         local finished2 = exports["tgiann-skillbar"]:taskBar(1100)
         if finished2 then
+            TriggerEvent('koe_jobs:getFabric')
             TriggerServerEvent('koe_jobs:getFabric')  
         end
     end
@@ -237,6 +246,7 @@ RegisterNetEvent('koe_jobs:getClothe')
 AddEventHandler('koe_jobs:getClothe',function()
     local finished = exports["tgiann-skillbar"]:taskBar(400)
     if finished then
+        TriggerEvent('koe_jobs:getClothe')
         TriggerServerEvent('koe_jobs:getTailoringRewards')   
     end
 end)
@@ -252,7 +262,14 @@ AddEventHandler('koe_jobs:endTailoring',function()
     RemoveBlip(woolBlip)
     RemoveBlip(fabricBlip)
     RemoveBlip(clotheBlip)
-    exports['okokNotify']:Alert("Tailoring", "Clocked Out and markers removed", 8000, 'info')  
+    -- exports['okokNotify']:Alert("Tailoring", "Clocked Out and markers removed", 8000, 'info')  
+    lib.notify({
+        title = 'Tailoring',
+        description = 'Clocked Out and markers removed',
+        type = 'inform',
+        duration = 8000,
+        position = 'top'
+       })
 end)
       
 
