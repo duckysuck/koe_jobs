@@ -1,22 +1,56 @@
-----Gets ESX-----
+----Gets ESX------------------------------------------------------------------------------------------------------------------------------------------
 ESX = nil
 local ox_inventory = exports.ox_inventory
 
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+--XP STUFF--------------------------------------------------------------------------------------------------------------------------------------------
 
+local xp = 0
+local currentlevel = 0
 
+RegisterServerEvent('koe_jobs:getCurrentXp')
+AddEventHandler('koe_jobs:getCurrentXp', function()
+    local src = source
+    local identifier =  ESX.GetPlayerFromId(source).identifier
+    MySQL.single('SELECT job_xp FROM users WHERE identifier = ?', {identifier}, function(result)
+        if result then
+            xp = result.job_xp
+            TriggerClientEvent('koe_jobs:mainXp', src, xp)
+        end
+    end)
+    
+end)    
 
+RegisterServerEvent('koe_jobs:xphandler')
+AddEventHandler('koe_jobs:xphandler', function(xp, level)
+    xp = xp  
+    currentlevel = level
+end)
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
 --MINING START ---------------------------------------------------------------------------------------------------------------------------------------
+
 --Gives Stone for mining
 RegisterServerEvent('koe_jobs:getStone')
 AddEventHandler('koe_jobs:getStone', function()
+    print('Players xp is currently '..xp..' and their level is '..currentlevel)
 	local xPlayer = ESX.GetPlayerFromId(source)
     local stoneAmount = math.random(Config.minStone , Config.maxStone)
-    
     if ox_inventory:CanCarryItem(source, 'stone', stoneAmount) then
 	    xPlayer.addInventoryItem('stone', stoneAmount)
+
     else
-        -- TriggerClientEvent('okokNotify:Alert', source, "Mining", "Not enough space", 8000, 'error')
         TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough space", duration = 8000, position = 'top'})
     end
 
@@ -30,7 +64,6 @@ AddEventHandler('koe_jobs:stoneCount', function()
     if items and items.stone > 0 then
         TriggerClientEvent('koe_jobs:washStone', source)
     else
-        -- TriggerClientEvent('okokNotify:Alert', source, "Mining", "Not enough stone, go mine some more.", 8000, 'error')
         TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough stone, go mine some more.", duration = 8000, position = 'top'})
     end
 
@@ -44,7 +77,6 @@ AddEventHandler('koe_jobs:washedstoneCount', function()
     if items and items.washed_stone > 0 then
         TriggerClientEvent('koe_jobs:smelt', source)
     else
-        -- TriggerClientEvent('okokNotify:Alert', source, "Mining", "Not enough washed stone, go wash some more.", 8000, 'error')
         TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough washed stone, go wash some more.", duration = 8000, position = 'top'})
     end
 
@@ -60,12 +92,10 @@ AddEventHandler('koe_jobs:getWashed', function()
             xPlayer.removeInventoryItem('stone', 1)
             xPlayer.addInventoryItem('washed_stone', 1)
         else
-            -- TriggerClientEvent('okokNotify:Alert', source, "Mining", "Not enough space", 8000, 'error')
             TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough space", duration = 8000, position = 'top'})
         end
         
     else
-        -- TriggerClientEvent('okokNotify:Alert', source, "Mining", "Not enough stone, go mine some more.", 8000, 'error')
         TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough stone, go mine some more.", duration = 8000, position = 'top'})
     end
 
@@ -81,12 +111,11 @@ AddEventHandler('koe_jobs:getMiningRewards', function()
             xPlayer.removeInventoryItem('washed_stone', 1)
             xPlayer.addInventoryItem('copper', 2)
             xPlayer.addInventoryItem('iron', 1)
+            TriggerEvent('koe_jobs:getCurrentXp', source)
         else
-            -- TriggerClientEvent('okokNotify:Alert', source, "Mining", "Not enough space", 8000, 'error')
             TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough space", duration = 8000, position = 'top'})
         end
     else
-        -- TriggerClientEvent('okokNotify:Alert', source, "Mining", "Not enough washed stone, go wash some more.", 8000, 'error')
         TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough washed stone, go wash some more.", duration = 8000, position = 'top'})
     end
 
@@ -114,10 +143,10 @@ AddEventHandler('koe_jobs:sellMiningRewards', function()
 
 end)
 
---MINING END ---------------------------------------------------------------------------------------------------------------------------------------
-
-
---BUTCHER START ---------------------------------------------------------------------------------------------------------------------------------------
+--MINING END -----------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+--BUTCHER START --------------------------------------------------------------------------------------------------------------------------------------
 --Gives Alive chickens
 RegisterServerEvent('koe_jobs:getChickens')
 AddEventHandler('koe_jobs:getChickens', function()
@@ -140,7 +169,6 @@ AddEventHandler('koe_jobs:chickenCount', function()
     if items and items.alive_chicken > 0 then
         TriggerClientEvent('koe_jobs:killEmAll', source)
     else
-        -- TriggerClientEvent('okokNotify:Alert', source, "Butcher", "Not enough Chickens, go get some!", 8000, 'error')
         TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough Chickens, go get some!", duration = 8000, position = 'top'})
     end
 
@@ -154,7 +182,6 @@ AddEventHandler('koe_jobs:killedCount', function()
     if items and items.slaughtered_chicken > 0 then
         TriggerClientEvent('koe_jobs:PackageEmUp', source)
     else
-        -- TriggerClientEvent('okokNotify:Alert', source, "Butcher", "Not enough DEAD Chickens, go get some!", 8000, 'error')
         TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough DEAD Chickens, go get some!", duration = 8000, position = 'top'})
     end
 
@@ -170,11 +197,9 @@ AddEventHandler('koe_jobs:getKilled', function()
             xPlayer.removeInventoryItem('alive_chicken', 1)
             xPlayer.addInventoryItem('slaughtered_chicken', 1)
         else
-            -- TriggerClientEvent('okokNotify:Alert', source, "Butcher", "Not enough space", 8000, 'error')
             TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough space.", duration = 8000, position = 'top'})
         end
     else
-        -- TriggerClientEvent('okokNotify:Alert', source, "Butcher", "Not enough DEAD Chickens, go get some!", 8000, 'error')
         TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough DEAD Chickens, go get some!", duration = 8000, position = 'top'})
     end
 
@@ -190,12 +215,10 @@ AddEventHandler('koe_jobs:getButcherRewards', function()
             xPlayer.removeInventoryItem('slaughtered_chicken', 1)
             xPlayer.addInventoryItem('packaged_chicken', 1)
         else
-            -- TriggerClientEvent('okokNotify:Alert', source, "Butcher", "Not enough space", 8000, 'error')
             TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough space.", duration = 8000, position = 'top'})
         end
         
     else
-        -- TriggerClientEvent('okokNotify:Alert', source, "Butcher", "Not enough DEAD Chickens, go get some!", 8000, 'error')
         TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough DEAD Chickens, go get some!", duration = 8000, position = 'top'})
     end
 
@@ -216,10 +239,11 @@ AddEventHandler('koe_jobs:sellButcherRewards', function()
 
 end)
 
---BUTCHER END ---------------------------------------------------------------------------------------------------------------------------------------
-
-
+--BUTCHER END ----------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------
 --TAILOR START ---------------------------------------------------------------------------------------------------------------------------------------
+
 --Gives Wool
 RegisterServerEvent('koe_jobs:getWool')
 AddEventHandler('koe_jobs:getWool', function()
@@ -314,8 +338,10 @@ AddEventHandler('koe_jobs:sellTailoringRewards', function()
 end)
 
 --Tailoring END ---------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------
+--FUELER START ----------------------------------------------------------------------------------------------------------------------------------------
 
---FUELER START ---------------------------------------------------------------------------------------------------------------------------------------
 --Gives Oil
 RegisterServerEvent('koe_jobs:getOil')
 AddEventHandler('koe_jobs:getOil', function()

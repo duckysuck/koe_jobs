@@ -49,10 +49,63 @@ Citizen.CreateThread(function()
     end
 end)
 
+--MINE TARGET--
+exports.qtarget:AddBoxZone("rock1", vector3(2945.03, 2794.8, 49.21), 59.0, 64.8, {
+    name="rock1",
+    heading=305,
+    debugPoly=false,
+    minZ=35.61,
+    maxZ=50.61
+    }, {
+        options = {
+            {
+                event = "koe_jobs:mineRock",
+                icon = "fas fa-hand-paper",
+                label = "Mine"
+            },
+        },
+        distance = 3.5
+})
+
+--WASH TARGET--
+exports.qtarget:AddBoxZone("wash", vector3(2755.38, 2801.91, 33.97), 2.0, 3.4, {
+    name="wash",
+    heading=300,
+    debugPoly=false,
+    minZ=31.17,
+    maxZ=35.17
+    }, {
+        options = {
+            {
+                event = "koe_jobs:stoneCheck",
+                icon = "fas fa-hand-paper",
+                label = "Wash Stone"
+            },
+        },
+        distance = 3.5
+})
+
+--SMELT TARGET--
+exports.qtarget:AddBoxZone("smelt", vector3(1111.84, -2009.66, 30.94), 4.4, 4.4, {
+    name="smelt",
+    heading=235,
+    debugPoly=false,
+    minZ=28.14,
+    maxZ=33.34
+    }, {
+        options = {
+            {
+                event = "koe_jobs:washCheck",
+                icon = "fas fa-hand-paper",
+                label = "Smelt Stone"
+            },
+        },
+        distance = 3.5
+})
+
 
 RegisterNetEvent('koe_jobs:spawnMinerPed')
-AddEventHandler('koe_jobs:spawnMinerPed',function(coords,heading) 
-
+AddEventHandler('koe_jobs:spawnMinerPed',function(coords,heading, xp, level) 
     local hash = GetHashKey(Config.minerModel)
     if not HasModelLoaded(hash) then
         RequestModel(hash)
@@ -67,44 +120,77 @@ AddEventHandler('koe_jobs:spawnMinerPed',function(coords,heading)
     SetEntityInvincible(minerNpc, true)
     SetBlockingOfNonTemporaryEvents(minerNpc, true)
     SetModelAsNoLongerNeeded(hash)
-    exports['qtarget']:AddEntityZone('minerNpc', minerNpc, {
+
+    TriggerServerEvent('koe_jobs:getCurrentXp', source)
+end)
+
+RegisterNetEvent('koe_jobs:miningTarget')
+AddEventHandler('koe_jobs:miningTarget',function(xp, level) 
+    if minerSpawned then
+        exports['qtarget']:AddEntityZone('minerNpc', minerNpc, {
             name="minerNpc",
             debugPoly=false,
             useZ = true
                 }, {
                 options = {
                     {
+                    event = "koe_jobs:playerinformation",
+                    label = 'Player Information',
+                    icon = "fas fa-id-badge",
+                    xp = xp,
+                    level = level
+                    },
+                    {
                     event = "koe_jobs:startMiningjob",
                     icon = "fas fa-id-badge",
                     label = "Start Mining",
+                    xp = xp,
+                    level = level
                     },   
                     {
-                        event = "koe_jobs:sellMining",
-                        icon = "fas fa-id-badge",
-                        label = "Sell Goods",
-                        }, 
+                    event = "koe_jobs:sellMining",
+                    icon = "fas fa-id-badge",
+                    label = "Sell Goods",
+                    xp = xp,
+                    level = level
+                    }, 
                     {
                     event = "koe_jobs:endMining",
                     icon = "fas fa-id-badge",
                     label = "Clock Out",
+                    xp = xp,
+                    level = level
                     },                                   
                 },
                     distance = 2.5
                 })
+    end
 end)
 
-RegisterCommand('startmining', function(source, args, rawCommand)
-    TriggerEvent('koe_jobs:startMiningjob')
-end)
-
-RegisterCommand('stopmining', function(source, args, rawCommand)
-    TriggerEvent('koe_jobs:endMining')
+RegisterNetEvent('koe_jobs:playerinformation')
+AddEventHandler('koe_jobs:playerinformation',function(data) 
+        lib.registerContext({
+            id = 'playerinfo',
+            title = 'Experience and Level',
+            onExit = function()
+                TriggerServerEvent('koe_jobs:getCurrentXp', source)
+            end,
+            options = {
+                {title = 'Player Information'},
+                {
+                    title = 'Current Level: '..data.level,
+                },
+                {
+                    title = 'Current XP: '..data.xp,
+                }
+            },
+        })
+        lib.showContext('playerinfo')
 end)
 
 RegisterNetEvent('koe_jobs:startMiningjob')
-AddEventHandler('koe_jobs:startMiningjob',function()
+AddEventHandler('koe_jobs:startMiningjob',function(data)
         onjobMining = true
-        -- exports['okokNotify']:Alert("Mining", "Ive added markers to your map for all locations, to get started go third eye some rocks down in the quarry", 15000, 'info') 
         lib.notify({
             title = 'Mining',
             description = 'Ive added markers to your map for all locations, to get started go third eye some rocks down in the quarry',
@@ -138,73 +224,11 @@ AddEventHandler('koe_jobs:startMiningjob',function()
         AddTextComponentString("Smelter Stone")
         EndTextCommandSetBlipName(smeltBlip)  
 
-        --MINE--
-        exports.qtarget:AddBoxZone("rock1", vector3(2945.03, 2794.8, 49.21), 59.0, 64.8, {
-            name="rock1",
-            heading=305,
-            debugPoly=false,
-            minZ=35.61,
-            maxZ=50.61
-            }, {
-                options = {
-                    {
-                        event = "koe_jobs:mineRock",
-                        icon = "fas fa-hand-paper",
-                        label = "Mine",
-                        canInteract = function()
-                            return onjobMining == true
-                        end,
-                    },
-                },
-                distance = 3.5
-        })
-
-        --WASH--
-        exports.qtarget:AddBoxZone("wash", vector3(2755.38, 2801.91, 33.97), 2.0, 3.4, {
-            name="wash",
-            heading=300,
-            debugPoly=false,
-            minZ=31.17,
-            maxZ=35.17
-            }, {
-                options = {
-                    {
-                        event = "koe_jobs:stoneCheck",
-                        icon = "fas fa-hand-paper",
-                        label = "Wash Stone",
-                        canInteract = function()
-                            return onjobMining == true
-                        end,
-                    },
-                },
-                distance = 3.5
-        })
-
-        --SMELT--
-        exports.qtarget:AddBoxZone("smelt", vector3(1111.84, -2009.66, 30.94), 4.4, 4.4, {
-            name="smelt",
-            heading=235,
-            debugPoly=false,
-            minZ=28.14,
-            maxZ=33.34
-            }, {
-                options = {
-                    {
-                        event = "koe_jobs:washCheck",
-                        icon = "fas fa-hand-paper",
-                        label = "Smelt Stone",
-                        canInteract = function()
-                            return onjobMining == true
-                        end,
-                    },
-                },
-                distance = 3.5
-        })
-
 end)
 
 RegisterNetEvent('koe_jobs:mineRock')
 AddEventHandler('koe_jobs:mineRock',function()
+    TriggerServerEvent('koe_jobs:getCurrentXp', source)
     local finished = exports["tgiann-skillbar"]:taskBar(30000)
     if finished then
         local finished2 = exports["tgiann-skillbar"]:taskBar(1100)
@@ -230,6 +254,7 @@ end)
 
 RegisterNetEvent('koe_jobs:washStone')
 AddEventHandler('koe_jobs:washStone',function()
+    TriggerServerEvent('koe_jobs:getCurrentXp', source)
     local finished = exports["tgiann-skillbar"]:taskBar(30000)
     if finished then
         local finished2 = exports["tgiann-skillbar"]:taskBar(1100)
@@ -243,6 +268,7 @@ end)
 
 RegisterNetEvent('koe_jobs:smelt')
 AddEventHandler('koe_jobs:smelt',function()
+    TriggerServerEvent('koe_jobs:getCurrentXp', source)
     local finished = exports["tgiann-skillbar"]:taskBar(400)
     if finished then
         TriggerEvent('koe_jobs:smelt')
@@ -252,6 +278,7 @@ end)
 
 RegisterNetEvent('koe_jobs:sellMining')
 AddEventHandler('koe_jobs:sellMining',function()
+    TriggerServerEvent('koe_jobs:getCurrentXp', source)
     TriggerServerEvent('koe_jobs:sellMiningRewards')  
 end)
 
@@ -261,7 +288,7 @@ AddEventHandler('koe_jobs:endMining',function()
     RemoveBlip(miningZone)
     RemoveBlip(washBlip)
     RemoveBlip(smeltBlip)
-    -- exports['okokNotify']:Alert("Mining", "Clocked Out and markers removed", 8000, 'info')  
+
     lib.notify({
         title = 'Mining',
         description = 'Clocked Out and markers removed',

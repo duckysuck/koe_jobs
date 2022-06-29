@@ -10,12 +10,15 @@ client_scripts {
 	'client/butcher.lua',
 	'client/tailoring.lua',
 	'client/fueler.lua',
-	'config.lua'
+	'shared/xp.lua',
+	'shared/config.lua'
  }
  
  server_scripts {
+	'@mysql-async/lib/MySQL.lua',
 	'server/main.lua',
-	'config.lua'
+	'shared/xp.lua',
+	'shared/config.lua'
  }
 
  shared_script '@ox_lib/init.lua'
