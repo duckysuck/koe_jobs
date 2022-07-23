@@ -2,9 +2,6 @@
 ESX = nil
 
 local PlayerData = {}
-local minerSpawned = false
-local minerNpc
-onjobMining = false
 
 Citizen.CreateThread(function()
     while ESX == nil do
@@ -12,6 +9,18 @@ Citizen.CreateThread(function()
         Citizen.Wait(0)
     end
 end)
+---------------------------------------------------------------------------------------------------------------------
+--Mining Start-------------------------------------------------------------------------------------------------------
+
+local minerSpawned = false
+local minerNpc
+onjobMining = false
+local miningLoop1 = false
+local miningLoop2 = false
+local miningLoop3 = false
+local inZone1 = false
+local inZone2 = false
+local inZone3 = false
 
 --Job start blips--
 Citizen.CreateThread(function()
@@ -27,8 +36,6 @@ Citizen.CreateThread(function()
         EndTextCommandSetBlipName(miningblip)  
 end)
 
-
---Mining Start-------------------------------------------------------------------------------------------------------
 
 --Spawn NPC--
 Citizen.CreateThread(function()
@@ -74,9 +81,6 @@ AddEventHandler('koe_jobs:spawnMinerPed',function(coords,heading)
             useZ = true
                 }, {
                 options = {
-                    {
-                    label = "Clock Out",
-                    },
                     {
                     event = "koe_jobs:startMiningjob",
                     icon = "fas fa-id-badge",
@@ -156,7 +160,7 @@ AddEventHandler('koe_jobs:startMiningjob',function()
                         icon = "fas fa-hand-paper",
                         label = "Mine",
                         canInteract = function()
-                            return onjobMining == true
+                            return onjobMining == true and miningLoop1 == false and miningLoop2 == false and miningLoop3 == false
                         end,
                     },
                 },
@@ -177,7 +181,7 @@ AddEventHandler('koe_jobs:startMiningjob',function()
                         icon = "fas fa-hand-paper",
                         label = "Wash Stone",
                         canInteract = function()
-                            return onjobMining == true
+                            return onjobMining == true and miningLoop1 == false and miningLoop2 == false and miningLoop3 == false
                         end,
                     },
                 },
@@ -198,13 +202,20 @@ AddEventHandler('koe_jobs:startMiningjob',function()
                         icon = "fas fa-hand-paper",
                         label = "Smelt Stone",
                         canInteract = function()
-                            return onjobMining == true
+                            return onjobMining == true and miningLoop1 == false and miningLoop2 == false and miningLoop3 == false
                         end,
                     },
                 },
                 distance = 3.5
         })
 
+end)
+
+RegisterNetEvent('koe_jobs:endStoneLoop')
+AddEventHandler('koe_jobs:endStoneLoop',function()
+    miningLoop1 = false
+    miningLoop2 = false
+    miningLoop3 = false
 end)
 
 RegisterNetEvent('koe_jobs:mineRock')
@@ -215,12 +226,50 @@ AddEventHandler('koe_jobs:mineRock',function()
         if finished2 then
             local finished3 = exports["tgiann-skillbar"]:taskBar(800)
             if finished3 then
-                TriggerEvent('koe_jobs:mineRock')
-                TriggerServerEvent('koe_jobs:getStone')  
+
+                local sphere = lib.zones.sphere({
+                    coords = vec3(2946.04, 2794.96, 40.64),
+                    radius = 30,
+                    debug = false,
+                    inside = inside1,
+                    onEnter = onEnter1,
+                    onExit = onExit1
+                })
+
+                miningLoop1 = true 
+                StartMiningLoop1()
             end
         end
     end
 end)
+
+function onEnter1(self)
+    inZone1 = true
+end
+
+function onExit1(self)
+    inZone1 = false
+    miningLoop1 = false 
+end
+
+function StartMiningLoop1()
+    Citizen.CreateThread(function()
+        while miningLoop1 do
+            TriggerServerEvent('koe_jobs:getStone') 
+            Citizen.Wait(Config.LoopTimer) 
+        end
+    end)
+
+    Citizen.Wait(Config.LoopRestartTimer)
+    lib.notify({
+        title = 'Mining',
+        description = 'You must third eye again to collect more.',
+        type = 'inform',
+        duration = 8000,
+        position = 'top'
+    })
+    miningLoop1 = false 
+end
 
 RegisterNetEvent('koe_jobs:stoneCheck')
 AddEventHandler('koe_jobs:stoneCheck',function()
@@ -238,21 +287,95 @@ AddEventHandler('koe_jobs:washStone',function()
     if finished then
         local finished2 = exports["tgiann-skillbar"]:taskBar(1100)
         if finished2 then
-            TriggerEvent('koe_jobs:washStone')
-            TriggerServerEvent('koe_jobs:getWashed')  
+
+            local sphere2 = lib.zones.sphere({
+                coords = vec3(2754.4, 2801.48, 33.96),
+                radius = 10,
+                debug = false,
+                inside = inside2,
+                onEnter = onEnter2,
+                onExit = onExit2
+            })
+
+            miningLoop2 = true 
+            StartMiningLoop2()
         end
     end
-
 end)
+
+function onEnter2(self)
+    inZone2 = true
+end
+
+function onExit2(self)
+    inZone2 = false
+    miningLoop2 = false 
+end
+
+function StartMiningLoop2()
+    Citizen.CreateThread(function()
+        while miningLoop2 do
+            TriggerServerEvent('koe_jobs:getWashed')  
+            Citizen.Wait(Config.LoopTimer) 
+        end
+    end)
+
+    Citizen.Wait(Config.LoopRestartTimer)
+    lib.notify({
+        title = 'Mining',
+        description = 'You must third eye again to collect more.',
+        type = 'inform',
+        duration = 8000,
+        position = 'top'
+    })
+    miningLoop2 = false 
+end
 
 RegisterNetEvent('koe_jobs:smelt')
 AddEventHandler('koe_jobs:smelt',function()
     local finished = exports["tgiann-skillbar"]:taskBar(400)
     if finished then
-        TriggerEvent('koe_jobs:smelt')
-        TriggerServerEvent('koe_jobs:getMiningRewards')   
+        local sphere3 = lib.zones.sphere({
+            coords = vec3(1109.48, -2007.92, 31.04),
+            radius = 15,
+            debug = false,
+            inside = inside3,
+            onEnter = onEnter3,
+            onExit = onExit3
+        })
+
+        miningLoop3 = true 
+        StartMiningLoop3()
     end
 end)
+
+function onEnter3(self)
+    inZone3 = true
+end
+
+function onExit3(self)
+    inZone3 = false
+    miningLoop3 = false 
+end
+
+function StartMiningLoop3()
+    Citizen.CreateThread(function()
+        while miningLoop3 do
+            TriggerServerEvent('koe_jobs:getMiningRewards') 
+            Citizen.Wait(Config.LoopTimer) 
+        end
+    end)
+
+    Citizen.Wait(Config.LoopRestartTimer)
+    lib.notify({
+        title = 'Mining',
+        description = 'You must third eye again to collect more.',
+        type = 'inform',
+        duration = 8000,
+        position = 'top'
+    })
+    miningLoop3 = false 
+end
 
 RegisterNetEvent('koe_jobs:sellMining')
 AddEventHandler('koe_jobs:sellMining',function()
@@ -261,11 +384,14 @@ end)
 
 RegisterNetEvent('koe_jobs:endMining')
 AddEventHandler('koe_jobs:endMining',function()
+    miningLoop1 = false 
+    miningLoop2 = false 
+    miningLoop3 = false 
     onjobMining = false
     RemoveBlip(miningZone)
     RemoveBlip(washBlip)
     RemoveBlip(smeltBlip)
-    -- exports['okokNotify']:Alert("Mining", "Clocked Out and markers removed", 8000, 'info')  
+ 
     lib.notify({
         title = 'Mining',
         description = 'Clocked Out and markers removed',

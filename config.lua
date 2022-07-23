@@ -50,10 +50,9 @@ Config.minPetrol              = 1
 Config.maxPetrol              = 2            
 Config.essencePrice           = 30
 
-
---petrol
---petrol_raffin
---essence
-
+----------------------------------------------
+---------LOOP MANAGEMENT----------------------
+Config.LoopRestartTimer     = 180000    --180000 is 5 minutes
+Config.LoopTimer            = 7000      -- 7000 is 7 seconds
 
 

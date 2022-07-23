@@ -29,6 +29,13 @@ end)
 
 --BUTCHER Start-------------------------------------------------------------------------------------------------------
 
+local butcherLoop1 = false
+local butcherLoop2 = false
+local butcherLoop3 = false
+local inZoneB1 = false
+local inZoneB2 = false
+local inZoneB3 = false
+
 --Spawn Start NPC--
 Citizen.CreateThread(function()
     while true do
@@ -204,6 +211,13 @@ AddEventHandler('koe_jobs:startButcherjob',function()
 
 end)
 
+RegisterNetEvent('koe_jobs:endButcherLoop')
+AddEventHandler('koe_jobs:endButcherLoop',function()
+    butcherLoop1 = false
+    butcherLoop2 = false
+    butcherLoop3 = false
+end)
+
 RegisterNetEvent('koe_jobs:grabChickens')
 AddEventHandler('koe_jobs:grabChickens',function()
     local finished = exports["tgiann-skillbar"]:taskBar(30000)
@@ -212,13 +226,51 @@ AddEventHandler('koe_jobs:grabChickens',function()
         if finished2 then
             local finished3 = exports["tgiann-skillbar"]:taskBar(800)
             if finished3 then
-                TriggerEvent('koe_jobs:grabChickens')
-                TriggerServerEvent('koe_jobs:getChickens')
+            
+                local sphereB1 = lib.zones.sphere({
+                    coords = vec3(-62.52, 6244.12, 31.08),
+                    radius = 10,
+                    debug = false,
+                    inside = insideB1,
+                    onEnter = onEnterB1,
+                    onExit = onExitB1
+                })
+
+                butcherLoop1 = true 
+                StartButcherLoop1()
             end
         end
     end
 
 end)
+
+function onEnterB1(self)
+    inZoneB1 = true
+end
+
+function onExitB1(self)
+    inZoneB1 = false
+    butcherLoop1 = false 
+end
+
+function StartButcherLoop1()
+    Citizen.CreateThread(function()
+        while butcherLoop1 do
+            TriggerServerEvent('koe_jobs:getChickens')
+            Citizen.Wait(Config.LoopTimer) 
+        end
+    end)
+
+    Citizen.Wait(Config.LoopRestartTimer)
+    lib.notify({
+        title = 'Butcher',
+        description = 'You must third eye again to collect more.',
+        type = 'inform',
+        duration = 8000,
+        position = 'top'
+    })
+    butcherLoop1 = false 
+end
 
 RegisterNetEvent('koe_jobs:chickenCheck')
 AddEventHandler('koe_jobs:chickenCheck',function()
@@ -236,22 +288,99 @@ AddEventHandler('koe_jobs:killEmAll',function()
     if finished then
         local finished2 = exports["tgiann-skillbar"]:taskBar(1100)
         if finished2 then
-            TriggerEvent('koe_jobs:killEmAll')
-            TriggerServerEvent('koe_jobs:getKilled')
+        
+            local sphereB2 = lib.zones.sphere({
+                coords = vec3(-79.62, 6228.66, 31.09),
+                radius = 8,
+                debug = false,
+                inside = insideB2,
+                onEnter = onEnterB2,
+                onExit = onExitB2
+            })
+
+            butcherLoop2 = true 
+            StartButcherLoop2()
         end
     end
 
 end)
 
+function onEnterB2(self)
+    inZoneB2 = true
+end
+
+function onExitB2(self)
+    inZoneB2 = false
+    butcherLoop2 = false 
+end
+
+function StartButcherLoop2()
+    Citizen.CreateThread(function()
+        while butcherLoop2 do
+            TriggerServerEvent('koe_jobs:getKilled')
+            Citizen.Wait(Config.LoopTimer) 
+        end
+    end)
+
+    Citizen.Wait(Config.LoopRestartTimer)
+    lib.notify({
+        title = 'Butcher',
+        description = 'You must third eye again to collect more.',
+        type = 'inform',
+        duration = 8000,
+        position = 'top'
+    })
+    butcherLoop2 = false 
+end
+
 RegisterNetEvent('koe_jobs:PackageEmUp')
 AddEventHandler('koe_jobs:PackageEmUp',function()
     local finished = exports["tgiann-skillbar"]:taskBar(400)
     if finished then
-        TriggerEvent('koe_jobs:PackageEmUp')
-        TriggerServerEvent('koe_jobs:getButcherRewards') 
+    
+        local sphereB3 = lib.zones.sphere({
+            coords = vec3(-100.12, 6210.64, 31.04),
+            radius = 10,
+            debug = false,
+            inside = insideB3,
+            onEnter = onEnterB3,
+            onExit = onExitB3
+        })
+
+        butcherLoop3 = true 
+        StartButcherLoop3()
     end
 
 end)
+
+function onEnterB3(self)
+    inZoneB3 = true
+end
+
+function onExitB3(self)
+    inZoneB3 = false
+    butcherLoop3 = false 
+end
+
+function StartButcherLoop3()
+    Citizen.CreateThread(function()
+        while butcherLoop3 do
+            TriggerServerEvent('koe_jobs:getButcherRewards') 
+            Citizen.Wait(Config.LoopTimer) 
+        end
+    end)
+
+    Citizen.Wait(Config.LoopRestartTimer)
+    lib.notify({
+        title = 'Butcher',
+        description = 'You must third eye again to collect more.',
+        type = 'inform',
+        duration = 8000,
+        position = 'top'
+    })
+    butcherLoop3 = false 
+end
+
 
 RegisterNetEvent('koe_jobs:sellButcher')
 AddEventHandler('koe_jobs:sellButcher',function()
@@ -260,6 +389,9 @@ end)
 
 RegisterNetEvent('koe_jobs:endButcher')
 AddEventHandler('koe_jobs:endButcher',function()
+    local butcherLoop1 = false
+    local butcherLoop2 = false
+    local butcherLoop3 = false
     onjobButcher = false
     RemoveBlip(chickenBlip)
     RemoveBlip(killBlip)

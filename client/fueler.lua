@@ -29,6 +29,13 @@ end)
 
 --fueler Start-------------------------------------------------------------------------------------------------------
 
+local fuelerLoop1 = false
+local fuelerLoop2 = false
+local fuelerLoop3 = false
+local inZoneF1 = false
+local inZoneF2 = false
+local inZoneF3 = false
+
 --Spawn Start NPC--
 Citizen.CreateThread(function()
     while true do
@@ -155,7 +162,7 @@ AddEventHandler('koe_jobs:startFuelerjob',function()
                         icon = "fas fa-hand-paper",
                         label = "Get Oil",
                         canInteract = function()
-                            return onjobfueler == true
+                            return onjobfueler == true and fuelerLoop1 == false and fuelerLoop2 == false and fuelerLoop3 == false
                         end,
                     },
                 },
@@ -176,7 +183,7 @@ AddEventHandler('koe_jobs:startFuelerjob',function()
                         icon = "fas fa-hand-paper",
                         label = "Refine Oil",
                         canInteract = function()
-                            return onjobfueler == true
+                            return onjobfueler == true and fuelerLoop1 == false and fuelerLoop2 == false and fuelerLoop3 == false
                         end,
                     },
                 },
@@ -197,13 +204,20 @@ AddEventHandler('koe_jobs:startFuelerjob',function()
                         icon = "fas fa-hand-paper",
                         label = "Make Gas",
                         canInteract = function()
-                            return onjobfueler == true
+                            return onjobfueler == true and fuelerLoop1 == false and fuelerLoop2 == false and fuelerLoop3 == false
                         end,
                     },
                 },
                 distance = 3.5
         })
 
+end)
+
+RegisterNetEvent('koe_jobs:endFuelerLoop')
+AddEventHandler('koe_jobs:endFuelerLoop',function()
+    fuelerLoop1 = false
+    fuelerLoop2 = false
+    fuelerLoop3 = false
 end)
 
 RegisterNetEvent('koe_jobs:grabOil')
@@ -214,13 +228,51 @@ AddEventHandler('koe_jobs:grabOil',function()
         if finished2 then
             local finished3 = exports["tgiann-skillbar"]:taskBar(800)
             if finished3 then
-                TriggerEvent('koe_jobs:grabOil')
-                TriggerServerEvent('koe_jobs:getOil')
+        
+                local sphereF1 = lib.zones.sphere({
+                    coords = vec3(604.32, 2858.64, 40.0),
+                    radius = 20,
+                    debug = false,
+                    inside = insideF1,
+                    onEnter = onEnterF1,
+                    onExit = onExitF1
+                })
+
+                fuelerLoop1 = true 
+                StartFuelerLoop1()
             end
         end
     end
 
 end)
+
+function onEnterF1(self)
+    inZoneF1 = true
+end
+
+function onExitF1(self)
+    inZoneF1 = false
+    fuelerLoop1 = false 
+end
+
+function StartFuelerLoop1()
+    Citizen.CreateThread(function()
+        while fuelerLoop1 do
+            TriggerServerEvent('koe_jobs:getOil')
+            Citizen.Wait(Config.LoopTimer) 
+        end
+    end)
+
+    Citizen.Wait(Config.LoopRestartTimer)
+    lib.notify({
+        title = 'Fueler',
+        description = 'You must third eye again to collect more.',
+        type = 'inform',
+        duration = 8000,
+        position = 'top'
+    })
+    fuelerLoop1 = false 
+end
 
 RegisterNetEvent('koe_jobs:oilCheck')
 AddEventHandler('koe_jobs:oilCheck',function()
@@ -238,22 +290,98 @@ AddEventHandler('koe_jobs:grabRefined',function()
     if finished then
         local finished2 = exports["tgiann-skillbar"]:taskBar(1100)
         if finished2 then
-            TriggerEvent('koe_jobs:grabRefined')
-            TriggerServerEvent('koe_jobs:getRefined')
+            
+            local sphereF2 = lib.zones.sphere({
+                coords = vec3(2776.04, 1495.48, 24.52),
+                radius = 15,
+                debug = false,
+                inside = insideF2,
+                onEnter = onEnterF2,
+                onExit = onExitF2
+            })
+
+            fuelerLoop2 = true 
+            StartFuelerLoop2()
         end
     end
 
 end)
 
+function onEnterF2(self)
+    inZoneF2 = true
+end
+
+function onExitF2(self)
+    inZoneF2 = false
+    fuelerLoop2 = false 
+end
+
+function StartFuelerLoop2()
+    Citizen.CreateThread(function()
+        while fuelerLoop2 do
+            TriggerServerEvent('koe_jobs:getRefined')
+            Citizen.Wait(Config.LoopTimer) 
+        end
+    end)
+
+    Citizen.Wait(Config.LoopRestartTimer)
+    lib.notify({
+        title = 'Fueler',
+        description = 'You must third eye again to collect more.',
+        type = 'inform',
+        duration = 8000,
+        position = 'top'
+    })
+    fuelerLoop2 = false 
+end
+
 RegisterNetEvent('koe_jobs:grabGas')
 AddEventHandler('koe_jobs:grabGas',function()
     local finished = exports["tgiann-skillbar"]:taskBar(400)
     if finished then
-        TriggerEvent('koe_jobs:grabGas')
-        TriggerServerEvent('koe_jobs:getFuelerRewards') 
+    
+        local sphereF3 = lib.zones.sphere({
+            coords = vec3(2769.96, 1520.96, 30.8),
+            radius = 10,
+            debug = false,
+            inside = insideF3,
+            onEnter = onEnterF3,
+            onExit = onExitF3
+        })
+
+        fuelerLoop3 = true 
+        StartFuelerLoop3()
     end
 
 end)
+
+function onEnterF3(self)
+    inZoneF3 = true
+end
+
+function onExitF3(self)
+    inZoneF3 = false
+    fuelerLoop3 = false 
+end
+
+function StartFuelerLoop3()
+    Citizen.CreateThread(function()
+        while fuelerLoop3 do
+            TriggerServerEvent('koe_jobs:getFuelerRewards') 
+            Citizen.Wait(Config.LoopTimer) 
+        end
+    end)
+
+    Citizen.Wait(Config.LoopRestartTimer)
+    lib.notify({
+        title = 'Fueler',
+        description = 'You must third eye again to collect more.',
+        type = 'inform',
+        duration = 8000,
+        position = 'top'
+    })
+    fuelerLoop3 = false 
+end
 
 RegisterNetEvent('koe_jobs:sellFueler')
 AddEventHandler('koe_jobs:sellFueler',function()
@@ -262,6 +390,9 @@ end)
 
 RegisterNetEvent('koe_jobs:endFueler')
 AddEventHandler('koe_jobs:endFueler',function()
+    fuelerLoop1 = false 
+    fuelerLoop2 = false 
+    fuelerLoop3 = false 
     onjobfueler = false
     RemoveBlip(petrolBlip)
     RemoveBlip(raffinBlip)
