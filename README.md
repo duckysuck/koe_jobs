@@ -1,10 +1,28 @@
-<h2 align='center'>WORK IN PROGRESS</h2>
+# Koe_Jobs:
+Simple job system, has a 5 minute timer once you begin collecting a resource. One skillcheck per 5 minutes to prevent AFK farming. 
 
-<h2 align='center'>Information</h2>
+# Join the Discord!
 
-Simple Jobs to be more interactive and eliminate standing in a circle waiting, this is a work in progress and currently only has Mining, Butcher and Tailoring. This is being used with ox_inventory, ox_lib and qtarget, More jobs will be added, i will also make them more interactive with emotes and extra activities. 
+[![Koe Scripts Discord](https://media.discordapp.net/attachments/973750342263144558/1003740741178249318/invite.png?width=810&height=216)](https://discord.gg/5JuxDnNm94)
 
----
+# Features:
+* Mining
+* Tailoring
+* Butcher
+* Fueler
 
-<h2 align='center'>Creator</h2>
-<b>This script was created by Dalkoe
+# Dependencies:
+* [qTarget](https://github.com/overextended/qtarget)
+* [ox_lib](https://github.com/overextended/ox_lib)
+* [tgiann-skillbar](https://github.com/TGIANN/fivem-tgiann-skillbar)
+* [ox_inventory](https://github.com/overextended/ox_inventory)
+
+# Video Preview:
+n/a
+
+# Download link:
+https://github.com/DalKoe/koe_jobs
+
+# Created By:
+DalKoe
+
