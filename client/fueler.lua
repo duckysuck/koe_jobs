@@ -259,7 +259,7 @@ function StartFuelerLoop1()
     Citizen.CreateThread(function()
         while fuelerLoop1 do
             TriggerServerEvent('koe_jobs:getOil')
-            Citizen.Wait(Config.LoopTimer) 
+            Citizen.Wait(Config.LoopTimer1) 
         end
     end)
 
@@ -320,7 +320,7 @@ function StartFuelerLoop2()
     Citizen.CreateThread(function()
         while fuelerLoop2 do
             TriggerServerEvent('koe_jobs:getRefined')
-            Citizen.Wait(Config.LoopTimer) 
+            Citizen.Wait(Config.LoopTimer2) 
         end
     end)
 
@@ -368,7 +368,7 @@ function StartFuelerLoop3()
     Citizen.CreateThread(function()
         while fuelerLoop3 do
             TriggerServerEvent('koe_jobs:getFuelerRewards') 
-            Citizen.Wait(Config.LoopTimer) 
+            Citizen.Wait(Config.LoopTimer3) 
         end
     end)
 

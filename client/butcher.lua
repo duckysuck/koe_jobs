@@ -160,7 +160,7 @@ AddEventHandler('koe_jobs:startButcherjob',function()
                         icon = "fas fa-hand-paper",
                         label = "Grab Chickens",
                         canInteract = function()
-                            return onjobButcher == true
+                            return onjobButcher == true and butcherLoop1 == false and butcherLoop2 == false and butcherLoop3 == false
                         end,
                     },
                 },
@@ -181,7 +181,7 @@ AddEventHandler('koe_jobs:startButcherjob',function()
                         icon = "fas fa-hand-paper",
                         label = "Kill Chickens",
                         canInteract = function()
-                            return onjobButcher == true
+                            return onjobButcher == true and butcherLoop1 == false and butcherLoop2 == false and butcherLoop3 == false
                         end,
                     },
                 },
@@ -202,7 +202,7 @@ AddEventHandler('koe_jobs:startButcherjob',function()
                         icon = "fas fa-hand-paper",
                         label = "Package Chickens",
                         canInteract = function()
-                            return onjobButcher == true
+                            return onjobButcher == true and butcherLoop1 == false and butcherLoop2 == false and butcherLoop3 == false
                         end,
                     },
                 },
@@ -257,7 +257,7 @@ function StartButcherLoop1()
     Citizen.CreateThread(function()
         while butcherLoop1 do
             TriggerServerEvent('koe_jobs:getChickens')
-            Citizen.Wait(Config.LoopTimer) 
+            Citizen.Wait(Config.LoopTimer1) 
         end
     end)
 
@@ -318,7 +318,7 @@ function StartButcherLoop2()
     Citizen.CreateThread(function()
         while butcherLoop2 do
             TriggerServerEvent('koe_jobs:getKilled')
-            Citizen.Wait(Config.LoopTimer) 
+            Citizen.Wait(Config.LoopTimer2) 
         end
     end)
 
@@ -366,7 +366,7 @@ function StartButcherLoop3()
     Citizen.CreateThread(function()
         while butcherLoop3 do
             TriggerServerEvent('koe_jobs:getButcherRewards') 
-            Citizen.Wait(Config.LoopTimer) 
+            Citizen.Wait(Config.LoopTimer3) 
         end
     end)
 

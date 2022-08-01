@@ -256,7 +256,7 @@ function StartMiningLoop1()
     Citizen.CreateThread(function()
         while miningLoop1 do
             TriggerServerEvent('koe_jobs:getStone') 
-            Citizen.Wait(Config.LoopTimer) 
+            Citizen.Wait(Config.LoopTimer1) 
         end
     end)
 
@@ -316,7 +316,7 @@ function StartMiningLoop2()
     Citizen.CreateThread(function()
         while miningLoop2 do
             TriggerServerEvent('koe_jobs:getWashed')  
-            Citizen.Wait(Config.LoopTimer) 
+            Citizen.Wait(Config.LoopTimer2) 
         end
     end)
 
@@ -362,7 +362,7 @@ function StartMiningLoop3()
     Citizen.CreateThread(function()
         while miningLoop3 do
             TriggerServerEvent('koe_jobs:getMiningRewards') 
-            Citizen.Wait(Config.LoopTimer) 
+            Citizen.Wait(Config.LoopTimer3) 
         end
     end)
 

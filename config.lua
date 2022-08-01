@@ -52,7 +52,9 @@ Config.essencePrice           = 30
 
 ----------------------------------------------
 ---------LOOP MANAGEMENT----------------------
-Config.LoopRestartTimer     = 180000    --180000 is 5 minutes
-Config.LoopTimer            = 7000      -- 7000 is 7 seconds
+Config.LoopRestartTimer         = 300000    --180000 is 5 minutes
+Config.LoopTimer1               = 7000      -- 7000 is 7 seconds
+Config.LoopTimer2               = 4000      -- 7000 is 7 seconds
+Config.LoopTimer3               = 2000      -- 7000 is 7 seconds
 
 

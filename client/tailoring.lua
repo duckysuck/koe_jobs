@@ -256,7 +256,7 @@ function StartTailorLoop1()
     Citizen.CreateThread(function()
         while tailorLoop1 do
             TriggerServerEvent('koe_jobs:getWool')
-            Citizen.Wait(Config.LoopTimer) 
+            Citizen.Wait(Config.LoopTimer1) 
         end
     end)
 
@@ -317,7 +317,7 @@ function StartTailorLoop2()
     Citizen.CreateThread(function()
         while tailorLoop2 do
             TriggerServerEvent('koe_jobs:getFabric')  
-            Citizen.Wait(Config.LoopTimer) 
+            Citizen.Wait(Config.LoopTimer2) 
         end
     end)
 
@@ -364,7 +364,7 @@ function StartTailorLoop3()
     Citizen.CreateThread(function()
         while tailorLoop3 do
             TriggerServerEvent('koe_jobs:getTailoringRewards')  
-            Citizen.Wait(Config.LoopTimer) 
+            Citizen.Wait(Config.LoopTimer3) 
         end
     end)
 
