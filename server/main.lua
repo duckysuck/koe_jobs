@@ -5,28 +5,6 @@ local ox_inventory = exports.ox_inventory
 TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
 ---------------------------------------------------------------------
 
-
-
-
-
---XP STUFF-------------------------------------------------------------------------------------------------------------------------------------------
-
-RegisterServerEvent('koe_jobs:getCurrentXp')
-AddEventHandler('koe_jobs:getCurrentXp', function()
-    local src = source
-    local identifier =  ESX.GetPlayerFromId(source).identifier
-    MySQL.single('SELECT job_xp FROM users WHERE identifier = ?', {identifier}, function(result)
-        if result then
-            local xp = result.job_xp
-            TriggerClientEvent('koe_jobs:mainXp', src, xp)
-        end
-    end)
-    
-end)
-------------------------------------------------------------------------------------------------------------------------------------------------------
-
-
-
 --MINING START ---------------------------------------------------------------------------------------------------------------------------------------
 
 --Gives Stone for mining
@@ -102,6 +80,9 @@ AddEventHandler('koe_jobs:getMiningRewards', function()
             xPlayer.removeInventoryItem('washed_stone', 1)
             xPlayer.addInventoryItem('copper', 2)
             xPlayer.addInventoryItem('iron', 1)
+
+            -- local identifier =  ESX.GetPlayerFromId(source).identifier
+	        -- exports['koe_vendors']:giveCivLevel(identifier, 1)
         else
             TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough space", duration = 8000, position = 'top'})
             TriggerClientEvent('koe_jobs:endStoneLoop', source)
@@ -211,6 +192,8 @@ AddEventHandler('koe_jobs:getButcherRewards', function()
         if ox_inventory:CanCarryItem(source, 'packaged_chicken', 1) then
             xPlayer.removeInventoryItem('slaughtered_chicken', 1)
             xPlayer.addInventoryItem('packaged_chicken', 1)
+            -- local identifier =  ESX.GetPlayerFromId(source).identifier
+	        -- exports['koe_vendors']:giveCivLevel(identifier, 1)
         else
             TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough space.", duration = 8000, position = 'top'})
             TriggerClientEvent('koe_jobs:endButcherLoop', source)
@@ -315,6 +298,8 @@ AddEventHandler('koe_jobs:getTailoringRewards', function()
         if ox_inventory:CanCarryItem(source, 'clothe', 2) then
             xPlayer.removeInventoryItem('fabric', 1)
             xPlayer.addInventoryItem('clothe', 2)
+            -- local identifier =  ESX.GetPlayerFromId(source).identifier
+	        -- exports['koe_vendors']:giveCivLevel(identifier, 1)
         else
             TriggerClientEvent('okokNotify:Alert', source, "Tailoring", "Not enough space", 8000, 'error')
             TriggerClientEvent('koe_jobs:endTailorLoop', source)
@@ -413,6 +398,8 @@ AddEventHandler('koe_jobs:getFuelerRewards', function()
         if ox_inventory:CanCarryItem(source, 'essence', 2) then
             xPlayer.removeInventoryItem('petrol_raffin', 1)
             xPlayer.addInventoryItem('essence', 2)
+            -- local identifier =  ESX.GetPlayerFromId(source).identifier
+	        -- exports['koe_vendors']:giveCivLevel(identifier, 1)
         else
             TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough space", 8000, 'error')
             TriggerClientEvent('koe_jobs:endFuelerLoop', source)
