@@ -238,6 +238,7 @@ AddEventHandler('koe_jobs:grabChickens',function()
 
                 butcherLoop1 = true 
                 StartButcherLoop1()
+                TriggerServerEvent('koe_jobs:giveRating')
             end
         end
     end
@@ -300,6 +301,7 @@ AddEventHandler('koe_jobs:killEmAll',function()
 
             butcherLoop2 = true 
             StartButcherLoop2()
+            TriggerServerEvent('koe_jobs:giveRating')
         end
     end
 
@@ -349,6 +351,7 @@ AddEventHandler('koe_jobs:PackageEmUp',function()
 
         butcherLoop3 = true 
         StartButcherLoop3()
+        TriggerServerEvent('koe_jobs:giveRating')
     end
 
 end)

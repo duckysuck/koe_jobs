@@ -1,5 +1,8 @@
 Config = {}
 
+Config.CivRatingToGive = 2
+
+
 --MINING--
 Config.minerCoords          = vector3(2831.28, 2797.52, 56.56)
 Config.minerHeading         = 94.24                      

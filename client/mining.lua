@@ -226,7 +226,7 @@ AddEventHandler('koe_jobs:mineRock',function()
         if finished2 then
             local finished3 = exports["tgiann-skillbar"]:taskBar(800)
             if finished3 then
-
+                TriggerServerEvent('koe_jobs:giveRating')
                 local sphere = lib.zones.sphere({
                     coords = vec3(2946.04, 2794.96, 40.64),
                     radius = 30,
@@ -287,7 +287,7 @@ AddEventHandler('koe_jobs:washStone',function()
     if finished then
         local finished2 = exports["tgiann-skillbar"]:taskBar(1100)
         if finished2 then
-
+            TriggerServerEvent('koe_jobs:giveRating')
             local sphere2 = lib.zones.sphere({
                 coords = vec3(2754.4, 2801.48, 33.96),
                 radius = 10,
@@ -335,6 +335,7 @@ RegisterNetEvent('koe_jobs:smelt')
 AddEventHandler('koe_jobs:smelt',function()
     local finished = exports["tgiann-skillbar"]:taskBar(400)
     if finished then
+        TriggerServerEvent('koe_jobs:giveRating')
         local sphere3 = lib.zones.sphere({
             coords = vec3(1109.48, -2007.92, 31.04),
             radius = 15,

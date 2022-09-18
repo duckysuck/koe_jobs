@@ -80,9 +80,6 @@ AddEventHandler('koe_jobs:getMiningRewards', function()
             xPlayer.removeInventoryItem('washed_stone', 1)
             xPlayer.addInventoryItem('copper', 2)
             xPlayer.addInventoryItem('iron', 1)
-
-            -- local identifier =  ESX.GetPlayerFromId(source).identifier
-	        -- exports['koe_vendors']:giveCivLevel(identifier, 1)
         else
             TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough space", duration = 8000, position = 'top'})
             TriggerClientEvent('koe_jobs:endStoneLoop', source)
@@ -428,3 +425,10 @@ AddEventHandler('koe_jobs:sellFuelerRewards', function()
 end)
 
 --Fueler END ---------------------------------------------------------------------------------------------------------------------------------------
+
+RegisterServerEvent('koe_jobs:giveRating')
+AddEventHandler('koe_jobs:giveRating', function()
+    local identifier =  ESX.GetPlayerFromId(source).identifier
+    exports['koe_vendors']:giveCivLevel(identifier, Config.CivRatingToGive)
+    exports['koe_vendors']:giveCrimLevel(identifier, -10)
+end)

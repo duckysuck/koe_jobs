@@ -240,6 +240,7 @@ AddEventHandler('koe_jobs:grabOil',function()
 
                 fuelerLoop1 = true 
                 StartFuelerLoop1()
+                TriggerServerEvent('koe_jobs:giveRating')
             end
         end
     end
@@ -302,6 +303,7 @@ AddEventHandler('koe_jobs:grabRefined',function()
 
             fuelerLoop2 = true 
             StartFuelerLoop2()
+            TriggerServerEvent('koe_jobs:giveRating')
         end
     end
 
@@ -351,6 +353,7 @@ AddEventHandler('koe_jobs:grabGas',function()
 
         fuelerLoop3 = true 
         StartFuelerLoop3()
+        TriggerServerEvent('koe_jobs:giveRating')
     end
 
 end)

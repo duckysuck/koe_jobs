@@ -238,6 +238,7 @@ AddEventHandler('koe_jobs:tailorWool',function()
 
                 tailorLoop1 = true 
                 StartTailorLoop1()
+                TriggerServerEvent('koe_jobs:giveRating')
             end
         end
     end
@@ -299,6 +300,7 @@ AddEventHandler('koe_jobs:getFabric',function()
 
             tailorLoop2 = true 
             StartTailorLoop2()
+            TriggerServerEvent('koe_jobs:giveRating')
         end
     end
 
@@ -348,6 +350,7 @@ AddEventHandler('koe_jobs:getClothe',function()
 
         tailorLoop3 = true 
         StartTailorLoop3()
+        TriggerServerEvent('koe_jobs:giveRating')
     end
 end)
 
