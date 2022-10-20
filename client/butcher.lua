@@ -1,17 +1,12 @@
 ----Gets ESX-----
-ESX = nil
+ESX = exports["es_extended"]:getSharedObject()
 
 local PlayerData = {}
 local butcherSpawned = false
 local butcherNpc
 onjobButcher = false
 
-Citizen.CreateThread(function()
-    while ESX == nil do
-        TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-        Citizen.Wait(0)
-    end
-end)
+
 
 --Job start blips--
 Citizen.CreateThread(function()
@@ -110,7 +105,6 @@ end)
 RegisterNetEvent('koe_jobs:startButcherjob')
 AddEventHandler('koe_jobs:startButcherjob',function()
         onjobButcher = true
-        -- exports['okokNotify']:Alert("Butcher", "Ive added markers to your map for all locations. To get started head to 1023 and third eye the cages inside on the left", 15000, 'info') 
         lib.notify({
             title = 'Butcher',
             description = 'Ive added markers to your map for all locations. To get started head to 1023 and third eye the cages inside on the left',
@@ -399,7 +393,6 @@ AddEventHandler('koe_jobs:endButcher',function()
     RemoveBlip(chickenBlip)
     RemoveBlip(killBlip)
     RemoveBlip(packageBlip)
-    -- exports['okokNotify']:Alert("Butcher", "Clocked Out and markers removed", 8000, 'info')  
     lib.notify({
         title = 'Mining',
         description = 'Clocked Out and markers removed',

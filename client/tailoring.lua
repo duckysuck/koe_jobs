@@ -1,17 +1,11 @@
 ----Gets ESX-----
-ESX = nil
+ESX = exports["es_extended"]:getSharedObject()
 
 local PlayerData = {}
 local tailorSpawned = false
 local tailorNpc
 onjobTailoring = false
 
-Citizen.CreateThread(function()
-    while ESX == nil do
-        TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-        Citizen.Wait(0)
-    end
-end)
 
 --Job start blips--
 Citizen.CreateThread(function()
@@ -111,7 +105,6 @@ end)
 RegisterNetEvent('koe_jobs:startTailoringjob')
 AddEventHandler('koe_jobs:startTailoringjob',function()
         onjobTailoring = true
-        -- exports['okokNotify']:Alert("Tailoring", "Ive added markers to your map for all locations, to get started go third eye the field marked in red", 15000, 'info') 
         lib.notify({
             title = 'Tailoring',
             description = 'Ive added markers to your map for all locations, to get started go third eye the field marked in red',
@@ -396,7 +389,6 @@ AddEventHandler('koe_jobs:endTailoring',function()
     RemoveBlip(woolBlip)
     RemoveBlip(fabricBlip)
     RemoveBlip(clotheBlip)
-    -- exports['okokNotify']:Alert("Tailoring", "Clocked Out and markers removed", 8000, 'info')  
     lib.notify({
         title = 'Tailoring',
         description = 'Clocked Out and markers removed',

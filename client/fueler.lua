@@ -1,17 +1,10 @@
 ----Gets ESX-----
-ESX = nil
+ESX = exports["es_extended"]:getSharedObject()
 
 local PlayerData = {}
 local fuelerSpawned = false
 local fuelerNpc
 onjobfueler = false
-
-Citizen.CreateThread(function()
-    while ESX == nil do
-        TriggerEvent('esx:getSharedObject', function(obj) ESX = obj end)
-        Citizen.Wait(0)
-    end
-end)
 
 --Job start blips--
 Citizen.CreateThread(function()
@@ -110,7 +103,6 @@ end)
 RegisterNetEvent('koe_jobs:startFuelerjob')
 AddEventHandler('koe_jobs:startFuelerjob',function()
         onjobfueler = true
-        -- exports['okokNotify']:Alert("Fueler", "Ive added markers to your map for all locations. To get started head above 4020 to the blip marked on your GPS to grab oil", 15000, 'info') 
         lib.notify({
             title = 'Fueler',
             description = 'Ive added markers to your map for all locations. To get started head above 4020 to the blip marked on your GPS to grab oil',
@@ -400,7 +392,6 @@ AddEventHandler('koe_jobs:endFueler',function()
     RemoveBlip(petrolBlip)
     RemoveBlip(raffinBlip)
     RemoveBlip(essenceBlip)
-    -- exports['okokNotify']:Alert("Fueler", "Clocked Out and markers removed", 8000, 'info')  
     lib.notify({
         title = 'Fueler',
         description = 'Clocked Out and markers removed',

@@ -126,7 +126,13 @@ AddEventHandler('koe_jobs:getChickens', function()
     if ox_inventory:CanCarryItem(source, 'alive_chicken', chickenAmount) then
         xPlayer.addInventoryItem('alive_chicken', chickenAmount)
     else
-        TriggerClientEvent('okokNotify:Alert', source, "Butcher", "Not enough space", 8000, 'error')
+        lib.notify({
+            title = 'Butcher',
+            description = 'Not enough space',
+            type = 'error',
+            duration = 8000,
+            position = 'top'
+        })
         TriggerClientEvent('koe_jobs:endButcherLoop', source)
     end
 
@@ -189,8 +195,6 @@ AddEventHandler('koe_jobs:getButcherRewards', function()
         if ox_inventory:CanCarryItem(source, 'packaged_chicken', 1) then
             xPlayer.removeInventoryItem('slaughtered_chicken', 1)
             xPlayer.addInventoryItem('packaged_chicken', 1)
-            -- local identifier =  ESX.GetPlayerFromId(source).identifier
-	        -- exports['koe_vendors']:giveCivLevel(identifier, 1)
         else
             TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = "Not enough space.", duration = 8000, position = 'top'})
             TriggerClientEvent('koe_jobs:endButcherLoop', source)
@@ -231,7 +235,13 @@ AddEventHandler('koe_jobs:getWool', function()
     if ox_inventory:CanCarryItem(source, 'wool', woolAmount) then
         xPlayer.addInventoryItem('wool', woolAmount)
     else
-        TriggerClientEvent('okokNotify:Alert', source, "Tailoring", "Not enough space", 8000, 'error')
+        lib.notify({
+            title = 'Tailoring',
+            description = 'Not enough space',
+            type = 'error',
+            duration = 8000,
+            position = 'top'
+        })
         TriggerClientEvent('koe_jobs:endTailorLoop', source)
     end
 
@@ -245,7 +255,13 @@ AddEventHandler('koe_jobs:woolCount', function()
     if items and items.wool > 0 then
         TriggerClientEvent('koe_jobs:getFabric', source)
     else
-        TriggerClientEvent('okokNotify:Alert', source, "Tailoring", "Not enough Wool, go get some!", 8000, 'error')
+        lib.notify({
+            title = 'Tailoring',
+            description = 'Not enough wool go get some!',
+            type = 'error',
+            duration = 8000,
+            position = 'top'
+        })
         TriggerClientEvent('koe_jobs:endTailorLoop', source)
     end
 
@@ -262,11 +278,11 @@ AddEventHandler('koe_jobs:getFabric', function()
             xPlayer.removeInventoryItem('wool', 1)
             xPlayer.addInventoryItem('fabric', 1)
         else
-            TriggerClientEvent('okokNotify:Alert', source, "Tailoring", "Not enough space", 8000, 'error')
+            TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = 'Not enough space', duration = 8000, position = 'top'})
             TriggerClientEvent('koe_jobs:endTailorLoop', source)
         end
     else
-        TriggerClientEvent('okokNotify:Alert', source, "Tailoring", "Not enough Wool, go get some!", 8000, 'error')
+        TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = 'Not enough Wool, go get some!', duration = 8000, position = 'top'})
         TriggerClientEvent('koe_jobs:endTailorLoop', source)
     end
 
@@ -280,7 +296,7 @@ AddEventHandler('koe_jobs:fabricCheck', function()
     if items and items.fabric > 0 then
         TriggerClientEvent('koe_jobs:getClothe', source)
     else
-        TriggerClientEvent('okokNotify:Alert', source, "Tailoring", "Not enough Fabric, go get some!", 8000, 'error')
+        TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = 'Not enough Fabric, go get some!', duration = 8000, position = 'top'})
         TriggerClientEvent('koe_jobs:endTailorLoop', source)
     end
 
@@ -298,12 +314,12 @@ AddEventHandler('koe_jobs:getTailoringRewards', function()
             -- local identifier =  ESX.GetPlayerFromId(source).identifier
 	        -- exports['koe_vendors']:giveCivLevel(identifier, 1)
         else
-            TriggerClientEvent('okokNotify:Alert', source, "Tailoring", "Not enough space", 8000, 'error')
+            TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = 'Not enough space', duration = 8000, position = 'top'})
             TriggerClientEvent('koe_jobs:endTailorLoop', source)
         end
         
     else
-        TriggerClientEvent('okokNotify:Alert', source, "Tailoring", "Not enough Fabric, go get some!", 8000, 'error')
+        TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = 'Not enough Fabric, go get some!', duration = 8000, position = 'top'})
         TriggerClientEvent('koe_jobs:endTailorLoop', source)
     end
 
@@ -336,7 +352,7 @@ AddEventHandler('koe_jobs:getOil', function()
     if ox_inventory:CanCarryItem(source, 'petrol', petrolAmount) then
         xPlayer.addInventoryItem('petrol', petrolAmount)
     else
-        TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough space", 8000, 'error')
+        TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = 'Not enough space', duration = 8000, position = 'top'})
         TriggerClientEvent('koe_jobs:endFuelerLoop', source)
     end
 
@@ -349,7 +365,7 @@ AddEventHandler('koe_jobs:oilCount', function()
     if items and items.petrol > 0 then
         TriggerClientEvent('koe_jobs:grabRefined', source)
     else
-        TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough Oil, go get some!", 8000, 'error')
+        TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = 'Not enough Oil, go get some!', duration = 8000, position = 'top'})
         TriggerClientEvent('koe_jobs:endFuelerLoop', source)
     end
 
@@ -362,7 +378,7 @@ AddEventHandler('koe_jobs:refinedCount', function()
     if items and items.petrol_raffin > 0 then
         TriggerClientEvent('koe_jobs:grabGas', source)
     else
-        TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough Refined Oil, go get some!", 8000, 'error')
+        TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = 'Not enough Refined Oil!', duration = 8000, position = 'top'})
         TriggerClientEvent('koe_jobs:endFuelerLoop', source)
     end
 
@@ -377,11 +393,11 @@ AddEventHandler('koe_jobs:getRefined', function()
             xPlayer.removeInventoryItem('petrol', 1)
             xPlayer.addInventoryItem('petrol_raffin', 1)
         else
-            TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough space", 8000, 'error')
+            TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = 'Not enough space', duration = 8000, position = 'top'})
             TriggerClientEvent('koe_jobs:endFuelerLoop', source)
         end
     else
-        TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough Oil, go get some!", 8000, 'error')
+        TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = 'Not enough Oil!', duration = 8000, position = 'top'})
         TriggerClientEvent('koe_jobs:endFuelerLoop', source)
     end
 
@@ -398,12 +414,12 @@ AddEventHandler('koe_jobs:getFuelerRewards', function()
             -- local identifier =  ESX.GetPlayerFromId(source).identifier
 	        -- exports['koe_vendors']:giveCivLevel(identifier, 1)
         else
-            TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough space", 8000, 'error')
+            TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = 'Not enough space', duration = 8000, position = 'top'})
             TriggerClientEvent('koe_jobs:endFuelerLoop', source)
         end
         
     else
-        TriggerClientEvent('okokNotify:Alert', source, "Fueler", "Not enough Refined Oil, go get some!", 8000, 'error')
+        TriggerClientEvent('ox_lib:notify', source, {type = 'error', description = 'Not enough Refined Oil!', duration = 8000, position = 'top'})
         TriggerClientEvent('koe_jobs:endFuelerLoop', source)
     end
 
